@@ -69,7 +69,7 @@ class Signin extends Component {
                 placeholder="Mot de passe"
                 className="password"
               />
-              <button class="unmask" type="button" title="Mask/Unmask password to check content">Unmask</button>
+              <button className="unmask" type="button" title="Mask/Unmask password to check content">Unmask</button>
             </label>
           </div>
           <div>

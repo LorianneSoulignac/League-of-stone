@@ -1,17 +1,33 @@
 import React, { Component } from "react";
-
-import logo from "./logo.svg";
 import "./App.css";
+// import { Link } from 'react-router-dom';
+
+import Modal from 'react-responsive-modal';
 
 class Game extends Component {
+  state = {
+    open: false,
+  };
+ 
+  onOpenModal = () => {
+    this.setState({ open: true });
+  };
+ 
+  onCloseModal = () => {
+    this.setState({ open: false });
+  };
+ 
   render() {
+    const { open } = this.state;
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>League of Stones</h2>
-          <p>Bienvenue</p>
-        </header>
+      <div>
+        <button onClick={this.onOpenModal}>Open modal</button>
+        <Modal open={open} onClose={this.onCloseModal} center>
+          <h2>Match-making</h2>
+          <div className="requete"></div>
+          <div classeName="searchChampion"></div>
+          <button onClick={this.onCloseModal}>Open modal</button>
+        </Modal>
       </div>
     );
   }

@@ -10,6 +10,7 @@ import {
 import Game from "./Game";
 import Signin from './pages/SigninSignup/Signin';
 import Signup from './pages/SigninSignup/Signup';
+import Jeu from "./pages/Jeu/Jeu"
 
 import "./App.css";
 
@@ -48,13 +49,16 @@ class App extends Component {
         <Switch>
           <Route
             path="/signin"
+            
             render={props => (
               <Signin setSessionToken={this.setSessionToken} {...props} />
             )}
           />
           />
           <Route path="/signup" component={Signup} />
+          <Route path="/jeu" component={Jeu} />
           <PrivateRoute component={Game} isConnected={this.state.isConnected} />
+          <PrivateRoute component={Jeu} isConnected={this.state.isConnected} />
         </Switch>
       </Router>
     );
