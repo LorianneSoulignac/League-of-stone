@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import './Regle.css';
+import './Rules.css';
 import axios from "axios";
 import { SERVER_URL } from "../../consts";
 import {
     Redirect
   } from "react-router-dom";
 
-class Regle extends Component {
+class Rules extends Component {
     constructor(props){
         super(props);
         this.state = {
@@ -64,4 +64,4 @@ class Regle extends Component {
     }
 }
 
-export default Regle;
+export default Rules;
