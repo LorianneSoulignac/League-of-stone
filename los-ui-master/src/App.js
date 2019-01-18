@@ -6,11 +6,13 @@ import {
   Redirect
 } from "react-router-dom";
 
-import Signin from "./Signin";
-import Signup from "./Signup";
-import Game from "./Game";
+// pages
+import Profil from "./profil";
+import Signin from './SigninSignup/Signin';
+import Signup from './SigninSignup/Signup';
 
 import "./App.css";
+
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route
@@ -50,13 +52,15 @@ class App extends Component {
               <Signin setSessionToken={this.setSessionToken} {...props} />
             )}
           />
-          />
+          
+          <Route path="/profil" component={Profil} />
           <Route path="/signup" component={Signup} />
-          <PrivateRoute component={Game} isConnected={this.state.isConnected} />
+          <PrivateRoute component={Profil} isConnected={this.state.isConnected} />
         </Switch>
       </Router>
     );
   }
+  //<Route path="/Regle" component={Regle} />
 }
 
 export default App;
