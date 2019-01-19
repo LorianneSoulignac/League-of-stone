@@ -6,8 +6,13 @@
     "axios": "^0.18.0",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
+    "react-image": "^2.0.0",
+    "react-native": "^0.57.8",
+    "react-native-video": "^4.3.1",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "2.1.2"
+    "react-script": "^2.0.5",
+    "react-scripts": "^2.1.2",
+    "start": "^5.1.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -23,5 +28,8 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.2.3"
+  }
 }
