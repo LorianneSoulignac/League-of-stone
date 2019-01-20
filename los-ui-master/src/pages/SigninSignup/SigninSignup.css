@@ -74,7 +74,7 @@ background: #1abc9c;
 
 /* bouton voir code */
 
-.password + .unmask {
+.unmask {
     position:absolute;
     right: 68px; top: 7px;
     width: 25px;
@@ -90,7 +90,7 @@ background: #1abc9c;
     z-index:1;
     width: 17px;
     height: 17px;
-    background: #e3e3e3;
+    background: #89fae7;
     border-radius: 50%;
   }
   .password[type="text"] + .unmask:after {
@@ -104,3 +104,5 @@ background: #1abc9c;
     background: #aaa;
     border-radius: 50%;
   }
+
+/* visisble */
