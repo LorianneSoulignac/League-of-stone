@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 
 // pages
-import Profil from "./profil";
+import Profile from "./profile";
 import Signin from './SigninSignup/Signin';
 import Signup from './SigninSignup/Signup';
 
@@ -53,9 +53,9 @@ class App extends Component {
             )}
           />
           
-          <Route path="/profil" component={Profil} />
+          <Route path="/profile" component={Profile} />
           <Route path="/signup" component={Signup} />
-          <PrivateRoute component={Profil} isConnected={this.state.isConnected} />
+          <PrivateRoute component={Profile} isConnected={this.state.isConnected} />
         </Switch>
       </Router>
     );
