@@ -1,78 +1,101 @@
 import React, { Component } from "react";
 import "./App.css";
 import axios from "axios";
-
-// import { Link } from 'react-router-dom';
-
-import Modal from 'react-responsive-modal';
 import { SERVER_URL } from './consts';
+import './Game.css';
 
 class Game extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      open: false,
       token : this.props.location.state.token,
       id: this.props.location.state.id,
       name: this.props.location.state.name,
-      joueurs: []
+      joueurs: [],
+      match: ""
     };
-    console.log ("token :" + this.state.token);
-    console.log ("id :" + this.state.id);
-    console.log("name : " + this.state.name)
+    this.handleChangeMatchmakingId= this.handleChangeMatchmakingId.bind(this);
   }
- 
-  onOpenModal = () => {
-    this.setState({ open: true });
-  };
- 
-  onCloseModal = () => {
-    this.setState({ open: false });
-  };
   
+
   makingMatch(){
-    let tab = []
     axios
       .get(
         SERVER_URL +
-          "/matchmaking/participate?userid="+this.state.id+"&name="+this.state.name+"&token="+this.state.token
+          "/matchmaking/participate?userId="+this.state.id+"&name="+this.state.name+"&token="+this.state.token
       ).then(res => {
         if (res.data.status === "ok") { 
-          tab.push({name : this.state.name, userid: this.state.id})
-          
-        }
-        this.setState({joueurs: tab})
         
+        }
         
       });
       
       
   }
+  getAll(){
+    axios
+      .get(
+        SERVER_URL +
+          "/matchmaking/getAll?token="+this.state.token
+      ).then(res => {
+        if (res.data.status === "ok") { 
+              this.setState({joueurs: res.data.data.slice()})
+              console.log(this.state.joueurs)
+            }
+        }
+      );
+  }
 
+  handleChangeMatchmakingId(e){
+      this.setState({match : e.target.value})
+     
+
+  }
+  request(){
+    axios
+    .get(
+      SERVER_URL +
+        "/matchmaking/request?matchmakingId="+this.state.match+"&token="+this.state.token
+    ).then(res => {
+      if (res.data.status === "ok") {
+        console.log('sned request');
+          }
+      }
+    );
+  }
+
+  accepteRequest(){
+    axios
+      .get(
+        SERVER_URL +
+        "/matchmaking/acceptRequest?matchmakingId="+this.state.matchmakingId+"&token="+this.state.token
+      ).then(res => {
+        if(res.data.status === "ok"){
+          
+        }
+      })
+  }
+  // refresh request Matchmaking and getALl
+  componentDidMount(){
+    this.intervalMatchmaking = setInterval(() => this.makingMatch(), 5000);
+    this.intervalGetAll = setInterval(() => this.getAll(), 5000);
+  }
+  componentWillMount(){
+    clearInterval(this.interval);
+  }
   render() {
-    // const { open } = this.state;
-    
+    console.log(this.state.match)
     return(
+      
       <div>
-        <button onClick={()=>{this.makingMatch()}}>JOUER</button>
+
+        <button onClick={this.onOpenModal}>JOUER</button>
         <ul>
-          <div>
-            {this.state.joueurs.map((recipe)=>{
-              return <li key={recipe.userid}>{recipe.name}</li>
-            })}
-          </div>
-        {/* <button onClick={this.onOpenModal}>Open modal</button>
-        <Modal open={open} onClose={this.onCloseModal} center>
-          <h2>Match-making</h2>
-          <div className="requete">
-            <ul>
-              {this.renderTools()}
-            </ul>
-          </div>
-          <div className="searchChampion"></div>
-          <button onClick={this.onCloseModal}>Open modal</button>
-        </Modal> */}
+          {this.state.joueurs.map((recipe)=>{
+           return <li key={recipe.name}>{recipe.name} | <button value={recipe.matchmakingId} onClick={this.handleChangeMatchmakingId}>Jouer</button></li>
+          })}
         </ul>
+        {this.request()}
       </div>
     );
   }
