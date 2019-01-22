@@ -10,6 +10,8 @@ import {
 import Rules from './pages/Rules/Rules';
 import Signin from './pages/SigninSignup/Signin';
 import Signup from './pages/SigninSignup/Signup';
+import Game from './Game';
+import Modal from './Modal';
 
 import "./App.css";
 
@@ -54,7 +56,7 @@ class App extends Component {
           />
           />
           <Route path="/signup" component={Signup} />
-          <PrivateRoute component={Rules} isConnected={this.state.isConnected} />
+          <PrivateRoute component={Game} isConnected={this.state.isConnected} />
         </Switch>
       </Router>
     );
