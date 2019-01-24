@@ -38,7 +38,7 @@ class Signin extends Component {
       .then(res => {
         if (res.data.status === "ok") {
           this.props.setSessionToken(res.data.token);
-          this.props.history.push({pathname : process.env.PUBLIC_URL + "/profile", state: { pseudo : res.data.data.name, email : res.data.data.email}});
+          this.props.history.push({pathname : process.env.PUBLIC_URL + "/home", state: { pseudo : res.data.data.name, email : res.data.data.email}});
           this.setState({
             isConnect : false,
             
@@ -59,7 +59,7 @@ class Signin extends Component {
   render() {
 
     if(this.isConnect === false){
-      return(<Redirect to='/signIn'></Redirect>)
+      return(<Redirect to='/signin'></Redirect>)
 
     }else{
     return (

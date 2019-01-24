@@ -15,7 +15,9 @@ class Profile extends Component {
           };
 
 
+        this.homePage = this.homePage.bind(this);
         this.handleDisconnection = this.handleDisconnection.bind(this);
+        this.rulesPage = this.rulesPage.bind(this);
     }
 
     handleDisconnection(e) {
@@ -28,26 +30,35 @@ class Profile extends Component {
                 if (res.data.status === "ok") {
                     this.props.history.push(process.env.PUBLIC_URL + "/signin");
                     this.setState({
-                    connect : false,
                     })
                 }
             });
     }
+    homePage(){
+        this.props.history.push({pathname : process.env.PUBLIC_URL + "/home", state: { pseudo : this.state.pseudo, email :this.state.email}});
+    }
+    rulesPage(){
+        this.props.history.push({pathname : process.env.PUBLIC_URL + "/rules", state: { pseudo : this.state.pseudo, email :this.state.email}});
+    }
 
     render() {
 
-//if(!this.props.connect){
-  //  return <Redirect to ='/signIn'/>
-//}
-//else{
     return ( 
         <body>
-            <header>League of Stones</header>
-            <nav>
-                    <Link to="/accueil">Accueil</Link>
-                    <Link to="/profile">Mon profil</Link>
-                    <button onClick={this.handleDisconnection}>Deconnexion</button>  
-            </nav>
+            <header>  
+                <nav className="navbar navbar-expand-lg navbar-light bg-light navbar-info bg-dark ">
+                    <a className="nav-item nav-link  text-warning" >
+                    <button onClick = {this.homePage}>Accueil</button>
+                    </a>
+                    <a className="nav-item nav-link  text-warning"> 
+                        <button onClick = {this.profilePage}>Profil</button> 
+                    </a>
+                    <a className="nav-item nav-link  text-warning" >
+                    <button onClick = {this.rulesPage}>Règles du jeu</button>
+                    </a> 
+                    <a className="nav-item nav-link  text-warning" onClick={this.handleDisconnection}>Deconnexion</a>
+                </nav>
+            </header>
             <h1>Mon Profil </h1>
             <div>
                 <h2>Mon pseudo : {this.state.pseudo} </h2>

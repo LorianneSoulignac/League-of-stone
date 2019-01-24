@@ -7,9 +7,11 @@ import {
 } from "react-router-dom";
 
 // pages
-import Profile from "./profile";
+import Profile from './profile';
 import Signin from './SigninSignup/Signin';
 import Signup from './SigninSignup/Signup';
+import Rules from './Rules';
+import Home from './home';
 
 import "./App.css";
 
@@ -52,9 +54,10 @@ class App extends Component {
               <Signin setSessionToken={this.setSessionToken} {...props} />
             )}
           />
-          
+          <Route path="/home" component={Home} />
           <Route path="/profile" component={Profile} />
           <Route path="/signup" component={Signup} />
+          <Route path="/rules" component={Rules} />
           <PrivateRoute component={Profile} isConnected={this.state.isConnected} />
         </Switch>
       </Router>
