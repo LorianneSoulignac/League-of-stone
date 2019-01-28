@@ -1,0 +1,42 @@
+js:
+import React, { Component } from 'react';
+import axios from "axios";
+import { SERVER_URL } from "../../consts";
+import Modal from 'react-modal';
+import "./Jeu.css";
+import img from "../../plateau_v1.png";
+
+
+
+class Jeu extends Component {
+
+
+    
+      render() {
+        function youpi (){
+          alert("t es trop un beau gosse lucas tu as reussi!");
+        }
+        return (
+          <div id="test">
+            <img src="https://lolstatic-a.akamaihd.net/frontpage/apps/prod/LolGameInfo-Harbinger/en_US/79bb9691654d03083fbc28272bffbbc5e0d10762/assets/assets/images/gi-modes-sr-the-battle-for-the-rift.jpg" alt="" useMap="#m1"/>
+            <button id="m1" onClick={youpi}><area shape="rect" coords="351,665,525,829" title="x" alt="x" href="x" target="_self"/></button>
+</div>
+);
+      }
+    }
+
+export default Jeu;
+
+
+css:
+#test{position:relative; height:1080px; width:1920px; background:url(https://lolstatic-a.akamaihd.net/frontpage/apps/prod/LolGameInfo-Harbinger/en_US/79bb9691654d03083fbc28272bffbbc5e0d10762/assets/assets/images/gi-modes-sr-the-battle-for-the-rift.jpg) 0 0 no-repeat;
+}
+#m1{
+    background-color: Transparent;
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
+    position:absolute; top:527px; left:794px; width:227px; height:163px; color: brown}
+
