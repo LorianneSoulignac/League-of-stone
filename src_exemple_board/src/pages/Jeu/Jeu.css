@@ -1,0 +1,37 @@
+#test{
+    z-index: 3;
+    position:relative; background:url(https://static.wixstatic.com/media/db8260_f9114645cd75404a9b86e268dd3495de~mv2_d_2560_1440_s_2.png/v1/fill/w_950,h_538,al_c,usm_0.66_1.00_0.01/plateau_v1.png) 0 0 no-repeat;}
+
+
+    #a2{
+        z-index: 2;
+    background-color: Transparent;
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
+    position:absolute; top:222.00000745410154px; left:762.9999616777344px; width:93.933334px; height:39.933334px;}
+#a3{
+    z-index: 2;
+    background-color: Transparent;
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
+    position:absolute; top:292.00000745410154px; left:836.9999616777344px; width:97.933334px; height:136.933334px;}
+#a4{
+    color: aliceblue;
+    background-color: Transparent;
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
+    position:absolute; top:463px; left:465px; width:35px; height:19px;}
+
+#a1{
+    z-index: 2;
+    color: aliceblue;
+    position:absolute; top:159.5px; left:465px; width:35px; height:19px;}
