@@ -27,14 +27,18 @@ pickCard = () => {
   let toto = this.state.cards;
   toto.push(
     <Card lvl={this.state.nbCardHand}
-    onClick={this.caca.bind(this, this.state.nbCardHand)}
+    onClick={this.temp.bind(this, this.state.nbCardHand)}
 />);
   this.setState({cards: toto, nbCardHand: this.state.nbCardHand+1})
   }
   }
 
-caca = (id,event) =>{
+temp = (id,event) =>{
   alert("la carte cliqué est"+id)
+}
+
+test = () =>{
+  alert("btn test")
 }
 
   endTurn = () => {
@@ -59,7 +63,7 @@ caca = (id,event) =>{
           <div id="test">
           {/* bouton de test au cas ou  */}
           <div class="init_test">
-          <button type="button" class="btn_hidden" onClick={this.pickCard}></button>
+          <button type="button" class="btn_hidden" onClick={this.test}></button>
           </div>
 
           {/* div contenant le plateau centrale */}
@@ -172,7 +176,6 @@ caca = (id,event) =>{
           <div class="hand">
           
           {this.state.cards}
-
 
           </div>
 
