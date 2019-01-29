@@ -7,11 +7,12 @@ import {
 } from "react-router-dom";
 
 // pages
-import Rules from './pages/Rules/Rules';
-import Signin from './pages/SigninSignup/Signin';
-import Signup from './pages/SigninSignup/Signup';
-import Game from './Game';
-import Modal from './Modal';
+import Profile from './profile';
+import Signin from './SigninSignup/Signin';
+import Signup from './SigninSignup/Signup';
+import Rules from './Rules';
+import Home from './home';
+import Menu from './menu';
 
 import "./App.css";
 
@@ -46,19 +47,29 @@ class App extends Component {
 
   render() {
     return (
-      <Router>
-        <Switch>
-          <Route
-            path="/signin"
-            render={props => (
-              <Signin setSessionToken={this.setSessionToken} {...props} />
-            )}
-          />
-          />
-          <Route path="/signup" component={Signup} />
-          <PrivateRoute component={Game} isConnected={this.state.isConnected} />
-        </Switch>
-      </Router>
+      
+      <div>
+        <Router>
+          {this.state.isConnected && <Menu email={this.props.email} pseudo={this.props.pseudo}/>}
+        </Router>
+        <Router>
+          <Switch>
+            
+            <Route
+              path="/signin"
+              render={props => (
+                <Signin setSessionToken={this.setSessionToken} {...props} />
+              )}
+            />
+            <Route path="/menu" component={Menu} />
+            <Route path="/home" component={Home} />
+            <Route path="/profile" component={Profile} />
+            <Route path="/signup" component={Signup} />
+            <Route path="/rules" component={Rules} />
+            <PrivateRoute component={Profile} isConnected={this.state.isConnected} />
+          </Switch>
+        </Router>   
+      </div>
     );
   }
 }
