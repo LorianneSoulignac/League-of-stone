@@ -114,7 +114,7 @@ body, html {
     
     width: 17%;
     
-    bottom: 80%;
+    bottom: 83%;
     
     right: 52%;
     
@@ -131,7 +131,7 @@ body, html {
     
     width: 17%;
     
-    top: 61%;
+    top: 63%;
     
     right: 52%;
     
@@ -198,6 +198,44 @@ body, html {
     height: 100%;
     background-size: 100% 100%;
     right: 15%;
+}
+.card_joueev3{
+    background-image: url("https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Taric_1.jpg");
+    position: absolute;
+    width: 70%;
+    height: 100%;
+    background-size: 100% 100%;
+    right: 15%;
+}
+
+.card_joueev3_1{
+    background-image: url("/card_facev1.png");
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-size: 100% 100%;
+}
+
+.infoAttCard{
+    color: aliceblue;
+    position: absolute;
+    top: -3%;
+    left: 0%;
+    font-weight: 900;
+}
+.infoDeffCard{
+    color: aliceblue;
+    position: absolute;
+    top: -3%;
+    right: 0%;
+    font-weight: 900;
+}
+.infoNomCard{
+    color: aliceblue;
+    position: absolute;
+    bottom: 0%;
+    left: 0%;
+    font-weight: 900;
 }
 
 .hand{

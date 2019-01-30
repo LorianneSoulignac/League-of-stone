@@ -90,8 +90,14 @@ test = () =>{
           </div>
           <div class="card3">
 
-          <div class="card_joueev2">
+          
+          <div class="card_joueev3">
+          <div class="card_joueev3_1">
+          <div class="infoAttCard">30</div>
+          <div class="infoDeffCard">15</div>
+          <div class="infoNomCard">Tariq</div>
           <button type="button" class="btn_hidden" onClick={clicDeck}></button>
+          </div>
           </div>
 
           </div>
