@@ -1,0 +1,33 @@
+body{
+    margin: 0;
+    padding: 0;
+    background: #ecf0f1;
+    font-family: 'Thasadith', sans-serif;}
+
+#logo-HeartStone{
+    left:40%;
+      top: 15%;
+      position:fixed;
+      z-index:1
+    }
+
+
+ #background-video{
+        position: fixed;
+        padding: 0%;
+        width: 100%;
+        /* height: 100%; */
+        min-width:100%;
+        min-height:100%;
+            
+        padding: 0;
+        z-index: -1;
+        margin: 0;    
+    }
+
+.menu{
+    z-index: 1;
+}
+
+a{
+    color:#FFD700;}

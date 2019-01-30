@@ -54,7 +54,6 @@ class App extends Component {
         </Router>
         <Router>
           <Switch>
-            
             <Route
               path="/signin"
               render={props => (

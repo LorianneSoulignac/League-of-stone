@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
-import { SERVER_URL } from "../../consts";
+import { SERVER_URL } from "../consts";
 
 import './SigninSignup.css';
 // import './passwordChange'

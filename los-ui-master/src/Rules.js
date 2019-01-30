@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import './Rules.css';
-import Menu from './menu.js';
 
 class Rules extends Component {
     constructor(props) {

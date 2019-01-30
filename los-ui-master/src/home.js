@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import'./home.css';
-import Menu from './menu.js';
 
 
 class Home extends Component {
