@@ -37,8 +37,15 @@ class Signin extends Component {
           this.props.history.push({pathname : process.env.PUBLIC_URL + "/",
         state : {token : res.data.data.token, id: res.data.data.id, name : res.data.data.name}});
           
+        }else{
+          console.log("erreur")
+          document.getElementsByClassName("error")[0].style.display = "block";
+          
         }
       });
+  }
+  renderTools(){
+
   }
   handleChangeEmail(e) {
     this.setState({ email: e.target.value });
@@ -46,19 +53,22 @@ class Signin extends Component {
   handleChangePassword(e) {
     this.setState({ password: e.target.value });
   }
+  
 
   render() {
     return (
       <div>
+        
         <form onSubmit={this.handleSubmit} className="box">
           <div>
             <label>
+            <div className="error">T'as pas de compte ou quoi mon gars ! :) </div>
               <p id="titre">Login :</p>
               <input
                 type="text"
                 value={this.state.email}
                 onChange={this.handleChangeEmail}
-                placeholder="Pseudo"
+                placeholder="Email"
               />
             </label>
           </div>
@@ -72,17 +82,17 @@ class Signin extends Component {
                 placeholder="Mot de passe"
                 className="password"
               />
-              <button className="unmask" type="button" title="" onClick={()=>{this.setState({visibility : ! this.state.visibility})}}>Unmask</button>
+              
             </label>
           </div>
           <div>
             <input type="submit" value="Se connecter"/>
           </div>
-          <div className="box_text">
+          <div className="box-text">
           {
             "Vous n’avez pas de compte ? "
           }
-          <Link to="/signup">Inscrivez-vous !</Link>
+          <Link to="/signup" className="box-subText">Inscrivez-vous !</Link>
         </div>
         </form>
         

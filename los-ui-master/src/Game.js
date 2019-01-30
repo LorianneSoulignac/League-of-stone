@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import axios from "axios";
 import Modal from 'react-responsive-modal'
 import { SERVER_URL } from './consts';
-import { acceptRequest } from './utils';
 import "./App.css";
 import './Game.css';
 
@@ -22,7 +21,7 @@ class Game extends Component {
     };
     this.handleChangeMatchmakingId= this.handleChangeMatchmakingId.bind(this);
     this.handleChangeYourMatchmakingId= this.handleChangeYourMatchmakingId.bind(this);
-    this.accepteRequest= this.accepteRequest.bind(this);
+    this.acceptRequest= this.acceptRequest.bind(this);
    
   }
 
@@ -126,16 +125,28 @@ class Game extends Component {
         });
     }
   
-  accepteRequest(){
+  acceptRequest(){
     axios
     .get(
       SERVER_URL + "/matchmaking/acceptRequest?matchmakingId="+this.state.Youmatch+"&token="+this.state.token
     ).then(res => {
       if (res.data.status === "ok") { 
-            console.log("accpete")
+        this.props.history.push({pathname : process.env.PUBLIC_URL + "/Jeu",
+        state : {token : res.data.data.token}});
           }
       }
     );
+  }
+
+  unparticipate(){
+    axios
+    .get(
+      SERVER_URL + "'/matchmaking/unparticipate?token="+this.state.token
+    ).then(res => {
+      if(res.data.status == "ok"){
+        console.log("refuser")
+      }
+    })
   }
 
   
@@ -153,16 +164,21 @@ class Game extends Component {
         <div className="modalStyle">
           <div className="modal-child">
             <div className="modal-child-style">
-              <h2 className="send">Demandes reçues</h2>
+              <div classeName="modal-header div-receive">
+              <h2 classeName="modal-title">Demandes reçues</h2>
+              </div>
+              
               <ul className="list-group">
               {this.state.players.map((item)=>{
-                return <li className="list-group-item" key={item.userId}>{item.name} <button type="button" className="btn btn-danger" onClick={this.accepteRequest}>Refuser</button>
+                return <li className="list-group-item" key={item.userId}>{item.name} <button type="button" className="btn btn-danger" onClick={this.acceptRequest}>Refuser</button>
                 <button type="button" className="btn btn-success" value= {item.matchmakingId} onClick={this.handleChangeYourMatchmakingId}>Accepter</button></li>
               })}
               </ul>
             </div>
           <div className="modal-child-style">
-          <h2>Joueurs connectés</h2>
+              <div classeName="modal-header div-players">
+                <h2 classeName="modal-title">Joueurs connectés</h2>
+              </div>
           <ul className="list-group">
           {this.state.joueurs.map((item)=>{
             return <li className="list-group-item" key={item.name}>{item.name} <button type="button" className="btn btn-success" value={item.matchmakingId} onClick={this.handleChangeMatchmakingId}>Inviter </button></li>

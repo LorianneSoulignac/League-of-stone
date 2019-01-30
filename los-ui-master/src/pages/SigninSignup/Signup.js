@@ -40,6 +40,9 @@ class Signup extends Component {
     const { email, password, confirmPassword } = this.state;
     if (password !== confirmPassword) {
       this.setState({ error: "Les deux mots de passe ne correspondent pas" });
+      document.getElementsByClassName("error-password")[0].style.display = "block";
+      document.getElementsByClassName("error-password")[1].style.display = "block";
+
       return;
     }
     let url =
@@ -92,6 +95,7 @@ class Signup extends Component {
               placeholder="Mot de passe"
             />
           </label>
+          <div className="error-password">Les mots de passe ne correspondent pas</div>
           <label>
             {/* Confirmation du mot de passe :{" "} */}
             <input
@@ -101,11 +105,12 @@ class Signup extends Component {
               placeholder="Confirmation mot de passe"
             />
           </label>
+          <div className="error-password">Les mots de passe ne correspondent pas</div>
           <input type="submit" value="S'inscrire" />
 
-          <div className="box_text">
+          <div className="box-text">
             {"Vous avez un compte ? "}
-            <Link to="/signin">Connectez-vous !</Link>
+            <Link to="/signin" className="box-subText">Connectez-vous !</Link>
         </div>
         </form>
         

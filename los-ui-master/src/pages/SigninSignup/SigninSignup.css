@@ -1,12 +1,12 @@
 body{
     margin: 0;
     padding: 0;
-    background: #ecf0f1;
+    background: #1B2631;
     font-family: 'Thasadith', sans-serif;}
 
 /* titre league of stone */
 #titre{
-    color:  black;
+    color:  white;
     font-size: 350%;
     margin: 0;
 }
@@ -15,7 +15,7 @@ body{
 /* login */
 .box{
     width: 400px;
-    padding: 40px;
+    padding: 30px;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -25,7 +25,7 @@ body{
 }
 
 .box h1{
-color: black;
+color: white;
 text-transform: uppercase;
 font-weight: 500;
 
@@ -36,17 +36,17 @@ background: none;
 display: block;
 margin: 5px auto;
 text-align: center;
-border: 2px solid #3498db;
+border: 2px solid #e67e22;
 padding: 14px 10px;
 width: 200px;
 outline: none;
-color: black;
+color:white;
 border-radius: 24px;
 transition: 0.25s;
 }
 .box input[type = "text"]:focus,.box input[type = "password"]:focus{
-width: 280px;
-border-color:#1abc9c;
+width: 290px;
+border-color:#f1c40f;
 }
 .box input[type = "submit"]{
 border:0;
@@ -54,19 +54,41 @@ background: none;
 display: block;
 margin: 5px auto;
 text-align: center;
-border: 2px solid #1abc9c;
+border: 2px solid #f1c40f;
 padding: 14px 40px;
 outline: none;
-color: black;
+color: white;
 border-radius: 24px;
 transition: 0.25s;
 cursor: pointer;
 }
 .box input[type = "submit"]:hover{
-background: #1abc9c;
+background:#f1c40f;
 }
 
+.box-text{
+    color:white;
+}
+.box-subText{
+    text-decoration: none;
+    color: #f1c40f;
+}
+
+.box-subText:hover{
+    color: #e67e22;
+}
+
+.error{
+    display: none;
+    color: #E74C3C;
+}
+
+.error-password{
+    color: #E74C3C;
+    display: none;
+}
 /* inscrirption */
+
 /* #inscrire{
     color: aliceblue;
 } */
@@ -83,20 +105,11 @@ background: #1abc9c;
     background: #aaa;
     border-radius: 50%;
   }
-  .password + .unmask:before {
-    content: "";
-    position:absolute;
-    top:4px; left:4px;
-    z-index:1;
-    width: 17px;
-    height: 17px;
-    background: #89fae7;
-    border-radius: 50%;
-  }
+  
   .password[type="text"] + .unmask:after {
     content: "";
     position:absolute;
-    top:6px;
+    top:50px;
     left:6px;
     z-index:2;
     width: 13px;
