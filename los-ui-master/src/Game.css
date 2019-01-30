@@ -13,10 +13,10 @@
 }
 
 .modal-child-style{
-    background-color:#2c3e50;
+    background-color:#F2F3F4;
 }
 .styles_modal__gNwvD{
-    background-color:#2c3e50;
+    background-color:#F2F3F4;
 }
 .styles_overlay__CLSq-{
     display: inline-block;
@@ -28,7 +28,7 @@
     left: 0;
     right: 0;
     padding: 10px;
-    background-color: #2c3e50;
+    background-color: #F2F3F4;
 }
 
 .modalStyle{
@@ -77,10 +77,11 @@
 }
 
 .modal-header{
-    background-color: red;
-    width: 100;
+    background-color: #F8F9F9;
+    width: 100%;
+    margin-bottom: 5%;
 }
 
 h2{
-    color: white;
+    color: black; 
 }

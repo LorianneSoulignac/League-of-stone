@@ -22,6 +22,8 @@ class Game extends Component {
     this.handleChangeMatchmakingId= this.handleChangeMatchmakingId.bind(this);
     this.handleChangeYourMatchmakingId= this.handleChangeYourMatchmakingId.bind(this);
     this.acceptRequest= this.acceptRequest.bind(this);
+    this.unparticipate= this.unparticipate.bind(this);
+
    
   }
 
@@ -41,7 +43,6 @@ class Game extends Component {
       ).then(res => {
         if (res.data.status === "ok") { 
               this.setState({joueurs: res.data.data.slice()})
-              // console.log(this.state.joueurs)
             }
         }
       );
@@ -56,13 +57,13 @@ class Game extends Component {
   handleChangeYourMatchmakingId(e){
     console.log(e.target.value)
     this.setState({Youmatch : e.target.value})
-    this.accepteRequest()
+    this.acceptRequest()
 }
 
   // refresh request Matchmaking and getALl
   componentDidMount(){
-    this.intervalMatchmaking = setInterval(() => this.participate(), 5000);
-    this.intervalGetAll = setInterval(() => this.getAll(), 5000);
+    this.intervalMatchmaking = setInterval(() => this.participate(), 2000);
+    this.intervalGetAll = setInterval(() => this.getAll(), 2000);
   }
   componentWillMount(){
     clearInterval(this.interval);
@@ -88,30 +89,6 @@ class Game extends Component {
     // this.setState({players: part})
     })    
   }
-  // reloadParticipate(){
-  //   let part = []
-  //   if(this.state.match !== ""){
-  //     axios.get(
-  //       SERVER_URL + "/matchmaking/participate?token="+this.state.token
-  //     ).then(res =>{
-  //       if(res.data.status === "ok"){
-  //         console.log(res.data.data)
-  //         part.push(res.data.data.request)
-  //         if(res.data.data.request !== 0){
-  //           console.log(res.data.data.request);
-  //         }
-  //         if(res.data.data.match){
-  //           console.log(res.data.data.match)
-             
-
-  //         }
-  //       }else{
-  //         console.log(res.data.message)
-  //       }
-  //     })
-  //   }
-  //   this.setState({players : part})
-  // }
 
   request(){
       axios
@@ -141,9 +118,9 @@ class Game extends Component {
   unparticipate(){
     axios
     .get(
-      SERVER_URL + "'/matchmaking/unparticipate?token="+this.state.token
+      SERVER_URL + "/matchmaking/unparticipate?token="+this.state.token
     ).then(res => {
-      if(res.data.status == "ok"){
+      if(res.data.status === "ok"){
         console.log("refuser")
       }
     })
@@ -152,10 +129,6 @@ class Game extends Component {
   
   render() {
     const {open} = this.state;
-    console.log(this.state.players)
-    console.log(this.state.joueurs)
-    console.log(this.state.MematchmakingId)
-    
     return(
       <div>
         <button onClick={this.onOpenModal}>JOUER</button>
@@ -164,25 +137,25 @@ class Game extends Component {
         <div className="modalStyle">
           <div className="modal-child">
             <div className="modal-child-style">
-              <div classeName="modal-header div-receive">
-              <h2 classeName="modal-title">Demandes reçues</h2>
+              <div className="modal-header div-receive">
+              <h2 className="modal-title">Demandes reçues</h2>
               </div>
               
               <ul className="list-group">
-              {this.state.players.map((item)=>{
-                return <li className="list-group-item" key={item.userId}>{item.name} <button type="button" className="btn btn-danger" onClick={this.acceptRequest}>Refuser</button>
+              {this.state.players.map((item)=>(
+               <li className="list-group-item" key={item.userId}>{item.name} <button type="button" className="btn btn-danger" onClick={()=> {this.unparticipate()}}>Refuser</button>
                 <button type="button" className="btn btn-success" value= {item.matchmakingId} onClick={this.handleChangeYourMatchmakingId}>Accepter</button></li>
-              })}
+              ))}
               </ul>
             </div>
           <div className="modal-child-style">
-              <div classeName="modal-header div-players">
-                <h2 classeName="modal-title">Joueurs connectés</h2>
+              <div className="modal-header div-players">
+                <h2 className="modal-title">Joueurs connectés</h2>
               </div>
           <ul className="list-group">
-          {this.state.joueurs.map((item)=>{
-            return <li className="list-group-item" key={item.name}>{item.name} <button type="button" className="btn btn-success" value={item.matchmakingId} onClick={this.handleChangeMatchmakingId}>Inviter </button></li>
-          })}
+          {this.state.joueurs.map((item)=>(
+            <li className="list-group-item" key={item.name}>{item.name} <button type="button" className="btn btn-success" value={item.matchmakingId} onClick={this.handleChangeMatchmakingId}>Inviter </button></li>
+          ))}
           </ul>
             </div>
           </div>
