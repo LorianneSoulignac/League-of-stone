@@ -36,7 +36,7 @@ class Signin extends Component {
         if (res.data.status === "ok") {
           this.props.setSessionToken(res.data.token);
           this.props.history.push({pathname : process.env.PUBLIC_URL + "/",
-        state : {token : res.data.data.token, id: res.data.data.id, name : res.data.data.name}});
+        state : {token : res.data.data.token}});
           
         }else{
           console.log("erreur")

@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import axios from "axios";
 import Modal from 'react-responsive-modal'
 import { SERVER_URL } from './consts';
-import "./App.css";
 import './Game.css';
 
 class Game extends Component {
@@ -88,12 +87,18 @@ class Game extends Component {
         }
       });
   }
-  
+
   render() {
     const {open} = this.state;
     return(
       <div>
-      <button onClick={this.onOpenModal}>JOUER</button>
+      {/* <Button onClick={this.onOpenModal}></Button> */}
+      
+      <div className="button-modal" onClick={this.onOpenModal}>
+            <span className="title-jouer">JOUER&nbsp;&nbsp;</span>
+            <span className="title-jouer shift">›</span>
+            <div className="mask"></div>
+        </div>
       <Modal open={open} onClose={this.onCloseModal} className="modal" >
       <div className="backdropStyle">
       <div className="modalStyle">
@@ -136,7 +141,6 @@ class Game extends Component {
       </div>
     </div>
       </Modal>
-      
     </div>
     );
   }
