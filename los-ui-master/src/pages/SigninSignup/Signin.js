@@ -13,7 +13,8 @@ class Signin extends Component {
     this.state = {
       email: "",
       password: "",
-      visibility: false
+      visibility: false,
+      token: ""
     };
 
     this.handleChangeEmail = this.handleChangeEmail.bind(this);
