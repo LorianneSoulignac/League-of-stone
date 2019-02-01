@@ -1,26 +1,24 @@
+
+
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
-import'./Game.css';
 import axios from "axios";
 import { SERVER_URL } from "./consts";
-import Board from "./board/Board";
+import {
+    Redirect
+  } from "react-router-dom";
+  
+class Profile extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            pseudo : this.props.location.state.pseudo,
+            email : this.props.location.state.email,
+          };
 
 
-
-
-
-class Game extends Component {
-    
-	constructor(props) {
-		super(props);
-		this.state = {
-			
-			token: this.props.location.state.token
-		
-		};
-		
-
-	}
+        this.handleDisconnection = this.handleDisconnection.bind(this);
+    }
 
     handleDisconnection(e) {
         e.preventDefault();
@@ -37,15 +35,17 @@ class Game extends Component {
                 }
             });
     }
-  render() {
-    return (
+
+    render() {
+
+
+    return ( 
+        <body>
+           
+            <header>
         
-      <div>
-      <div>
-          <header>
-        
-              <nav className="navbar navbar-expand-lg navbar-light bg-light navbar-info bg-dark ">
-                  <a className="nav-item nav-link  text-warning" >
+        <nav className="navbar navbar-expand-lg navbar-light bg-light navbar-info bg-black ">
+                     <a className="nav-item nav-link  text-warning" >
                   <Link to="/Game">Accueil</Link>
                   </a>
                   <a className="nav-item nav-link  text-warning"> 
@@ -55,47 +55,18 @@ class Game extends Component {
                     <Link to="/Réglesdejeux">Régles de jeux</Link>
                     </a> 
                     <a className="nav-item nav-link  text-warning" onClick={this.handleDisconnection}>Deconnexion</a>
-
-              </nav>
-          </header>
-          </div>
-
-
-
-
-          <div >
-              
-			<div >
-			<Board
-            token= {this.props.location.state.token}
-            />
-			</div>
-         
-
-         
-
+        </nav>
+    </header>
+            <h1>Mon Profil </h1>
+            <div>
+                <h2>Mon pseudo : {this.state.pseudo} </h2>
+                <h2>Mon mail : {this.state.email} </h2>
             </div>
-
-         
-
-        
-
-</div>
+        </body>  
+    );
 
 
-
-
-
-            
-            
-            
-
-
-           
-        );
     }
 }
 
-
- 
-export default Game;
+export default Profile;

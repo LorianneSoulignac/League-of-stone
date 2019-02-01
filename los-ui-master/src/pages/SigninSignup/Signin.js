@@ -33,7 +33,8 @@ class Signin extends Component {
       .then(res => {
         if (res.data.status === "ok") {
           this.props.setSessionToken(res.data.token);
-          this.props.history.push(process.env.PUBLIC_URL + "/");
+          this.props.history.push({pathname : process.env.PUBLIC_URL+ "/Game", state: { pseudo : res.data.data.name, email : res.data.data.email, token: res.data.data.token}});
+         
         }
       });
   }
@@ -69,7 +70,7 @@ class Signin extends Component {
                 placeholder="Mot de passe"
                 className="password"
               />
-              <button class="unmask" type="button" title="Mask/Unmask password to check content">Unmask</button>
+              <button className="unmask" type="button" title="Mask/Unmask password to check content">Unmask</button>
             </label>
           </div>
           <div>

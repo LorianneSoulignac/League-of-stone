@@ -7,10 +7,12 @@ import {
 } from "react-router-dom";
 
 // pages
-// import Game from "./Game";
+import Game from "./Game";
 import Signin from './pages/SigninSignup/Signin';
 import Signup from './pages/SigninSignup/Signup';
-import Game from "./Game";
+import Jeu from "./pages/Jeu/Jeu";
+import Profile from "./Profile";
+import Rules from "./Rules";
 
 import "./App.css";
 
@@ -49,15 +51,19 @@ class App extends Component {
         <Switch>
           <Route
             path="/signin"
+            
             render={props => (
               <Signin setSessionToken={this.setSessionToken} {...props} />
             )}
           />
-          />
-          <Route path="/Game" component={Game} />
+          <Route path ="/Réglesdejeux" component={Rules}/>
+          <Route path ="/Game" component={Game}/>
+
+          <Route path ="/Profile" component={Profile}/>
           <Route path="/signup" component={Signup} />
-          
+          <Route path="/jeu" component={Jeu} />
           <PrivateRoute component={Game} isConnected={this.state.isConnected} />
+          <PrivateRoute component={Jeu} isConnected={this.state.isConnected} />
         </Switch>
       </Router>
     );
