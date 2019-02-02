@@ -12,7 +12,9 @@ class Signin extends Component {
     super(props);
     this.state = {
       email: "",
-      password: ""
+      password: "",
+      visibility: false,
+      token: ""
     };
 
     this.handleChangeEmail = this.handleChangeEmail.bind(this);
@@ -33,9 +35,18 @@ class Signin extends Component {
       .then(res => {
         if (res.data.status === "ok") {
           this.props.setSessionToken(res.data.token);
-          this.props.history.push(process.env.PUBLIC_URL + "/");
+          this.props.history.push({pathname : process.env.PUBLIC_URL + "/",
+        state : {pseudo : res.data.data.name, email : res.data.data.email, token : res.data.data.token}});
+          
+        }else{
+          console.log("erreur")
+          document.getElementsByClassName("error")[0].style.display = "block";
+          
         }
       });
+  }
+  renderTools(){
+
   }
   handleChangeEmail(e) {
     this.setState({ email: e.target.value });
@@ -43,19 +54,22 @@ class Signin extends Component {
   handleChangePassword(e) {
     this.setState({ password: e.target.value });
   }
+  
 
   render() {
     return (
       <div>
+        
         <form onSubmit={this.handleSubmit} className="box">
           <div>
             <label>
+            <div className="error">T'as pas de compte ou quoi mon gars ! :) </div>
               <p id="titre">Login :</p>
               <input
                 type="text"
                 value={this.state.email}
                 onChange={this.handleChangeEmail}
-                placeholder="Pseudo"
+                placeholder="Email"
               />
             </label>
           </div>
@@ -63,23 +77,23 @@ class Signin extends Component {
             <label>
               {/* Mot de passe :{" "} */}
               <input
-                type="password"
+                type={this.state.visibility ? 'text' : 'password'}
                 value={this.state.password}
                 onChange={this.handleChangePassword}
                 placeholder="Mot de passe"
                 className="password"
               />
-              <button class="unmask" type="button" title="Mask/Unmask password to check content">Unmask</button>
+              
             </label>
           </div>
           <div>
             <input type="submit" value="Se connecter"/>
           </div>
-          <div className="box_text">
+          <div className="box-text">
           {
             "Vous n’avez pas de compte ? "
           }
-          <Link to="/signup">Inscrivez-vous !</Link>
+          <Link to="/signup" className="box-subText">Inscrivez-vous !</Link>
         </div>
         </form>
         
