@@ -12,54 +12,41 @@ class Jeu extends Component {
         super(props);
         this.state = {
             token: this.props.location.state.token,
-            player1:this.props.location.state.player1,
-            player2:this.props.location.state.player2,
-
-            error: null,
-			isLoaded: false,
             champions: [],
-            
-            req: [],
             deck: false
         };
       }
 
-//deck
-	
-recupererinfoenanglais() {
+
+componentDidMount=()=>{
+this.getChampfromBack();
+this.getDeckLoad();
+
+    
+}
+
+transformInfoChamp=()=>{
     let iChamps = [];
-    for (let i = 0; i < 120 ; i++) {	
+    for (let i = 0; i < this.state.champions.length ; i++) {	
         iChamps.push({ "id" : this.state.champions[i].key ,"name": this.state.champions[i].name, "img":  this.state.champions[i].key + "_0.jpg" ,"attack": this.state.champions[i].info.attack,"defense": this.state.champions[i].info.defense}); 
-            // console.log(iChamps[i]);
+           
         }
     return iChamps;
     
 }
 
-deckcards(champs) {
+getTwentyRandomChamp=(champs)=>{
     console.log("bonjour")
 
     let cards = [];
-    // for (let i = 0; i < 20; i++) {
-    // 	cards.push(
-    // 		<Card id={champs[i].id}
-    // 			  name={champs[i].name}
-    // 			  img={champs[i].key +"_0.jpg"}
-    // 			  attack={champs[i].info.attack}
-    // 			  defense={champs[i].info.defense}
-                  
-    // 			  />);
 
-    // 		console.log(cards[i])
-    // }
     let i = 0;
     for(let c in champs){
-        // console.log("in deckcards")
         cards.push(
             champs[c]["key"]
         )
         i++
-        if(i==20){
+        if(i===20){
             break;
         }
     }
@@ -67,11 +54,7 @@ deckcards(champs) {
     return cards;
 }
 
-
-
-componentDidMount() {
-    
-    
+getChampfromBack=()=>{
     axios
         .get(SERVER_URL + "/cards/getAll")
 
@@ -85,7 +68,8 @@ componentDidMount() {
                         champions :result.data.data
                         
                     })
-                    let champions = this.recupererinfoenanglais(this.state.champions);
+                    
+                    let champions = this.transformInfoChamp();
                     
             }},
             
@@ -96,14 +80,27 @@ componentDidMount() {
                 });
             }
             );
-
-            this.getMatch()
-
+}
+getDeckLoad=()=>{
+    axios
+    .get(
+        SERVER_URL +
+        "/match/getMatch?token="+this.props.location.state.token
+    ).then(res => {
+        console.log(res.data.data.status)
+        if (res.data.data.status === "Deck is pending") {
+            console.log("deck pending")
+            this.setState({deck: false})
+        }else {
+            console.log("ok")
+            this.setState({deck: true})
+        }
+        });
 }
 
-handleCreateDeck() {
-    let cards = this.deckcards(this.state.champions);
-    let req = cards;
+handleCreateDeck=()=>{
+    let cards = this.getTwentyRandomChamp(this.state.champions);
+    
     let temp = "["
     for(let c in cards){
         temp+="{key:\""
@@ -118,7 +115,9 @@ handleCreateDeck() {
     axios
     
         .get(SERVER_URL + "/match/initDeck?deck=" +
-            JSON.stringify(temp)
+            encodeURI(temp) +
+            "&token=" +
+            this.state.token
         )
         .then(
             (result) => {
@@ -129,41 +128,17 @@ handleCreateDeck() {
                     
                     
             }},)
-        }
-
-
-deck = () =>{
-this.handleCreateDeck()
 }
-
-
-
-    getMatch(){
-        axios
-        .get(
-          SERVER_URL +
-            "/match/getMatch?token="+this.props.location.state.token
-        ).then(res => {
-            console.log(res)
-            if (res.data.data.status === "ok") {
-               this.setState({deck: true})
-            }else if(res.data.data.status === "Deck is pending"){
-                
-            }
-          });
-      }
-
 
     render() {
         if(!this.state.deck){
             return (
                 <div>
-            <div className="button-modal" onClick={this.deck}>
+            <div className="button-modal" onClick={this.handleCreateDeck}>
                 <span className="title-jouer">Deck&nbsp;&nbsp;</span>
                 <span className="title-jouer shift">›</span>
                 <div className="mask"></div>
-            </div>
-            {this.state.req.map((key,index) => key.key)}
+            </div>  
             </div>
             );
         }else{
