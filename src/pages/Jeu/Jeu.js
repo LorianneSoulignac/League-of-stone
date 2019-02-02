@@ -21,7 +21,7 @@ class Jeu extends Component {
 componentDidMount=()=>{
 this.getChampfromBack();
 this.getDeckLoad();
-
+console.log(this.state.token)
     
 }
 
@@ -89,7 +89,6 @@ getDeckLoad=()=>{
     ).then(res => {
         console.log(res.data.data.status)
         if (res.data.data.status === "Deck is pending") {
-            console.log("deck pending")
             this.setState({deck: false})
         }else {
             console.log("ok")
@@ -100,22 +99,23 @@ getDeckLoad=()=>{
 
 handleCreateDeck=()=>{
     let cards = this.getTwentyRandomChamp(this.state.champions);
-    
-    let temp = "["
-    for(let c in cards){
-        temp+="{key:\""
-        temp+=cards[c]
-        temp+="\"}, "
+    let champ = {
+        value: []
     }
     
-    temp = temp.substring(0, temp.length - 1);
-    temp = temp.substring(0, temp.length - 1);
-    temp+="]"
-
+    for(let c2 in cards){
+        let item = cards[c2]
+        champ.value.push({
+            "key" : item
+        })
+    }
+    console.log(champ.value)
+    
+    
     axios
     
         .get(SERVER_URL + "/match/initDeck?deck=" +
-            encodeURI(temp) +
+        JSON.stringify(champ.value) +
             "&token=" +
             this.state.token
         )
@@ -130,6 +130,23 @@ handleCreateDeck=()=>{
             }},)
 }
 
+getNbCarte = () =>{
+    axios
+    
+        .get(SERVER_URL + "/match/getMatch?token=" +
+            this.state.token
+        )
+        .then(
+            (result) => {
+                console.log(result)
+                if(result.statusText=== "OK"){
+                    
+                    console.log("ok")
+                    
+                    
+            }},)
+}
+
     render() {
         if(!this.state.deck){
             return (
@@ -139,12 +156,17 @@ handleCreateDeck=()=>{
                 <span className="title-jouer shift">›</span>
                 <div className="mask"></div>
             </div>  
+            <div className="button-modal" onClick={this.handleCreateDeck}>
+                <span className="title-jouer">(ne cliquer que si vous avez déjà fait initDeck)&nbsp;&nbsp;</span>
+                <span className="title-jouer shift">›</span>
+                <div className="mask"></div>
+            </div>
             </div>
             );
         }else{
         return (
             <div>
-                <button>Piocher une carte</button>
+                <button onClick={this.getNbCarte}>Piocher une carte</button>
                 <button>Changer tour</button>
                 <button>Attaquer</button>
             </div>
