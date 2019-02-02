@@ -59,6 +59,7 @@ class Signup extends Component {
         this.props.history.push(process.env.PUBLIC_URL + "/");
       } else {
         this.setState({ error: "Une erreur s'est produite : " + data.message });
+        document.getElementsByClassName("error")[0].style.display = "block";
       }
     });
   }
@@ -67,6 +68,7 @@ class Signup extends Component {
       <div>
         <form onSubmit={this.handleSubmit} className="box">
           <div>{this.state.error}</div>
+          <div className="error">Le compte existe déja :) </div>
           <p id="titre">Inscrivez-vous :</p>
           <label><br/>
             {/* Pseudo :{" "} */}
