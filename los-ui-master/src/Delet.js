@@ -56,7 +56,7 @@ class Delet extends Component {
                 value={this.state.password}
                 onChange={this.handleChangePassword}
                 placeholder="Mot de passe"
-                className="password"
+                className="passwordSupp"
               />
             </label>
           </div>
