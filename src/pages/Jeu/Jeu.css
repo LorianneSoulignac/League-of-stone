@@ -1,8 +1,21 @@
-#test{
-    width: 100%;
-    text-align: center;
-}
 
+  
+
+
+  .test{
+
+          /* The image used */
+    background-image: url("/league-of-legends-logo-24270.jpeg");
+  
+    /* Full height */
+
+  
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-size:100% 100%;
+  }
 
 .center_board{
     background-image: url("/plateau_vierge.png");
@@ -11,6 +24,7 @@
     width: 80%;
     top : 5%;
     background-size:100% 100%;
+    left: 0%;
 }
 
 .plateauJ1{
@@ -79,22 +93,6 @@ button.btn_hidden{
 }
 
 
-body, html {
-    height: 100%;
-  }
-  
-  body {
-    /* The image used */
-    background-image: url("/league-of-legends-logo-24270.jpeg");
-  
-    /* Full height */
-    height: 100%;
-  
-    /* Center and scale the image nicely */
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-  }
 .init_test{
     background-image: url("/fond.png");
     position: absolute;
@@ -208,6 +206,15 @@ body, html {
     right: 15%;
 }
 
+.card_joueev3_2{
+    
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-size: 100% 100%;
+    right: 0%;
+}
+
 .card_joueev3_1{
     background-image: url("/card_facev1.png");
     position: absolute;
@@ -217,14 +224,18 @@ body, html {
 }
 
 .infoAttCard{
-    color: aliceblue;
+    background-color: black;
+    border-radius: 100%;
+    color: orange;
     position: absolute;
     top: -3%;
     left: 0%;
     font-weight: 900;
 }
 .infoDeffCard{
-    color: aliceblue;
+    background-color: black;
+    border-radius: 100%;
+    color: orange;
     position: absolute;
     top: -3%;
     right: 0%;
