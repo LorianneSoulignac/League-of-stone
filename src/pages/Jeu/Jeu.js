@@ -36,6 +36,7 @@ class Jeu extends Component {
             data: null,
             yourTurn: null,
             adverseTurn: null,
+            havePlay: false,
 
             //your action
 
@@ -47,7 +48,7 @@ componentDidMount=()=>{
 this.getChampfromBack();
 this.getDeckLoad();
 this.getMatch();
-this.intervalGetMatch = setInterval(() => this.getMatch(), 5000);
+this.intervalGetMatch = setInterval(() => this.getMatch(), 1000);
 
     
 }
@@ -179,7 +180,7 @@ pickCard = () => {
 }
 
 playCard = (nameChamp) => {
-    if(this.canDoaction()){
+    if(this.canDoaction() && !this.state.havePlay){
         axios
       .get(
         SERVER_URL + "/match/playCard?token=" + 
@@ -191,7 +192,7 @@ playCard = (nameChamp) => {
         if(res.data.status === "ok"){
           // change the property of state
           
-          this.setState({data: res.data.data})
+          this.setState({data: res.data.data, havePlay: true})
           this.getMatch();
         }
       else {
@@ -199,7 +200,10 @@ playCard = (nameChamp) => {
       }
     })
     } else{
-        this.canDoactionAlertNot()
+        if(this.state.havePlay){
+            alert("Vous avez déjà jouer une carte!")
+        }else{
+        this.canDoactionAlertNot()}
     }
     
 }
@@ -296,6 +300,7 @@ playCard = (nameChamp) => {
     .then(res => {
       if(res.data.status === "ok"){
         alert("changement turn")
+        this.setState({havePlay: false})
       }
   
     })
