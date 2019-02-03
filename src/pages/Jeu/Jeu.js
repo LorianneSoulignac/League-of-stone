@@ -59,7 +59,7 @@ this.getChampfromBack();
 this.getDeckLoad();
 this.getMatch();
 this.intervalGetMatch = setInterval(() => this.getMatch(), 1000);
-this.setState({isLoaded: true})
+
     
 }
 
@@ -242,6 +242,7 @@ playCard = (nameChamp) => {
           if(res.data.data.status === "Player 1 won" || res.data.data.status === "Player 2 won"){
             this.setState({
                 finMatch: true,
+                gagnant: res.data.data.status
             })
           }else{
             this.setState({data: res.data.data})
@@ -250,9 +251,9 @@ playCard = (nameChamp) => {
         }
       else {
         if(res.message == "There is no match associated"){
-            this.setState({
-                finMatch: true,
-            })
+            this.props.history.push({pathname : process.env.PUBLIC_URL + "/game",
+                state: { pseudo: this.state.pseudo , token: this.state.token}});
+           
         }
       }
     
@@ -515,22 +516,18 @@ finMatch=()=>{
       SERVER_URL + "/match/finishMatch?token="+this.state.token
     )
     .then(res => {
-      if(res.data.status === "Player 1 won" || res.data.status === "Player 2 won"){
-        this.setState({
-            finMatch: true,
-            gagnant: res.data.status
-        })
+      if(res.status === "ok"){
+        this.props.history.push({pathname : process.env.PUBLIC_URL + "/game",
+        state: {pseudo: this.state.pseudo, token: this.state.token}});
+           
       }
     else {
-        if(res.message === "There is no match associated"){
-            this.setState({
-                finMatch: true
-            })
-        }else{
-            alert("error")
+        
+        this.props.history.push({pathname : process.env.PUBLIC_URL + "/game",
+        state: {pseudo: this.state.pseudo, token: this.state.token}});
         }
       
-    }
+    
   
   })
 }
@@ -549,12 +546,18 @@ finMatch=()=>{
             );
         }else{
             if(this.state.finMatch == true){
-                this.finMatch()
+                console.log(this.state.gagnant)
                     return(
-                        <div>
+                        <div class="finPartie">
                         La partie est finie merci d'avoir joué
                         <br/>
                         {this.state.gagnant}
+                        <div className="button-modal" onClick={this.finMatch}>
+                <span className="title-jouer">Retour à l'accueil&nbsp;&nbsp;</span>
+                <span className="title-jouer shift">›</span>
+                <div className="mask"></div>
+                 </div>
+
                     </div>
                     )
        

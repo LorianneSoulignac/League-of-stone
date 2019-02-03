@@ -334,3 +334,13 @@ width: 10%;
 height: 7%;
 text-align: center;
 }
+
+.finPartie{
+    color: white;    
+    top: 23%;    
+    position: absolute;
+    right: 13%;
+    text-align: center;
+    font-size: 2vw;
+    font-weight: 900;
+}
