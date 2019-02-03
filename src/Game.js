@@ -117,7 +117,7 @@ class Game extends Component {
                 // this.props.history.push({pathname : process.env.PUBLIC_URL + "/Jeu",
                 // state: { player1 : res.data.player1, player2: res.data.player2, token: this.props.location.state.token}});
                 this.props.history.push({pathname : process.env.PUBLIC_URL + "/jeu",
-                state: { player1 : res.data.player1, player2: res.data.player2, token: this.props.location.state.token}});
+                state: { pseudo: this.state.pseudo ,player1 : res.data.player1, player2: res.data.player2, token: this.props.location.state.token}});
             }
         });
   }
@@ -130,8 +130,8 @@ class Game extends Component {
     ).then(res => {
         if (res.data.status === "ok") {
             this.props.history.push({pathname : process.env.PUBLIC_URL + "/jeu",
-            state: { token: this.props.location.state.token}});
-                  }
+            state: { pseudo: this.state.pseudo ,player1 : res.data.player1, player2: res.data.player2, token: this.props.location.state.token}});
+                 }
       });
   }
 
