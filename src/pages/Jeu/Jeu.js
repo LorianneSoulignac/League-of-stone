@@ -18,6 +18,7 @@ class Jeu extends Component {
             token: this.props.location.state.token,
             // token: "JgUY9ZDH347l_7mXbzXZBHSSx3iejNF5",
             yourPseudo: this.props.location.state.pseudo,
+            adversePseudo: null,
             // pseudo: "11",
 
             //Deck info
@@ -37,9 +38,15 @@ class Jeu extends Component {
             yourTurn: null,
             adverseTurn: null,
             havePlay: false,
+            // your turn : colorTurn: "#339933",
+            // adverse turn : colorTurn: "#990000",
+            colorTurn: "",
+            textTurn: "",
 
             //your action
-
+            infoAttack: "none",
+            championAttack: "",
+            targetByAttack: ""
         };
       }
 
@@ -154,8 +161,8 @@ handleCreateDeck=()=>{
 
 //Partie de la gestion du plateau
 
-pickCard = () => {
-    if(this.canDoaction()){
+pickCard = () => { //YY
+    if(this.canDoaction() && this.state.hands.length <5){
         axios
       .get(
         SERVER_URL + "/match/pickCard?token=" + 
@@ -174,6 +181,9 @@ pickCard = () => {
       }
     })
     } else{
+        if(this.state.hands.length==5){
+            alert("pioche impossible vous avez deja 5 cartes")
+        }
         this.canDoactionAlertNot()
     }
     
@@ -332,6 +342,7 @@ test2=()=>{
         let nbCardj2 = getAll[p2]['hand']
         let yourTurn = getAll[p1]['turn']
         let adverseTurn = getAll[p2]['turn']
+        let adversePseudo = getAll[p2]['name']
         let i=1;
         for (let card in hands){
             let nameChamp= hands[card]['name'].replace(/\s/g, '');
@@ -354,7 +365,7 @@ test2=()=>{
             name= {nameChamp}
             attack= {BoardJ1[card]['stats']['attackdamage']}
             deff = {BoardJ1[card]['stats']['armor']}
-            onClick={this.temp.bind(this,nameChamp)}
+            onClick={this.attackFromCard.bind(this,nameChamp)}
             />
             
           );
@@ -368,11 +379,21 @@ test2=()=>{
             name= {nameChamp}
             attack= {BoardJ2[card]['stats']['attackdamage']}
             deff = {BoardJ2[card]['stats']['armor']}
+            onClick={this.targetCard.bind(this,nameChamp)}
             />
             
           );
           i = i+1;
         };
+        let colorTurn;
+        let textTurn;
+        if(yourTurn){
+            colorTurn="#339933"
+            textTurn="Your turn"
+        }else{
+            colorTurn="#990000"
+            textTurn="adverse turn"
+        }
         this.setState({
             yourHp: yourhp,
             adverseHp: adverseHp,
@@ -383,10 +404,97 @@ test2=()=>{
             nbCardj2: nbCardj2,
             yourTurn: yourTurn,
             adverseTurn: adverseTurn,
+            colorTurn: colorTurn,
+            textTurn: textTurn,
+            adversePseudo: adversePseudo
         })
       }
 
 
+attackFromCard=(champName)=>{
+this.setState({
+    championAttack: champName,
+    infoAttack: "block"
+})
+}
+
+targetCard=(champName)=>{
+    this.setState({
+        targetByAttack: champName,
+        infoAttack: "block"
+    })
+}
+targetPlayer=()=>{
+    let champName = this.state.adversePseudo;
+    this.setState({
+        targetByAttack: champName,
+        infoAttack: "block"
+    })
+}
+
+infoAttack=()=>{
+    this.setState({
+        infoAttack: "block"
+    })
+}
+
+attaquer=()=>{
+    if(this.state.championAttack == "" || this.state.targetByAttack == ""){
+        if(this.state.championAttack == ""){
+            alert("Selectionnes un attaquant!")
+        }else{
+            alert("Selectionnes une cible!")
+        }
+    }else{
+        if(this.state.targetByAttack == this.state.adversePseudo){
+            if(this.state.BoardJ2.length != 0){
+                alert("Vous devez vider le board adverse d'abord")
+            }else{
+                alert("attaque sur l'adversaire")
+            }
+        }else{
+            alert(this.state.championAttack+" attaque "+this.state.targetByAttack)
+            this.attaqueChampChamp(this.state.championAttack,this.state.targetByAttack)
+        }
+        
+    }
+    
+}
+
+
+attaqueChampChamp=(champName,targetChamp)=>{
+    axios
+    .get(
+      SERVER_URL + "/match/attack?card=" + champName
+      + "&ennemyCard="+targetChamp +
+      "&token="+this.state.token
+    )
+    .then(res => {
+      if(res.data.status === "ok"){
+        alert("attaque ok")
+      }
+    else {
+      alert("error")
+    }
+  
+  })
+}
+
+finMatch=()=>{
+    axios
+    .get(
+      SERVER_URL + "/match/attack?token="+this.state.token
+    )
+    .then(res => {
+      if(res.data.status === "ok"){
+        alert("fin du match ok")
+      }
+    else {
+      alert("error")
+    }
+  
+  })
+}
 
     render() {
         if(!this.state.deck){
@@ -404,13 +512,19 @@ test2=()=>{
             </div>
             </div>
             );
+        }else if(!this.state.yourTurn && !this.state.yourTurn){
+            alert("fin de la partie")
+            this.finMatch()
+            this.props.history.push({pathname : process.env.PUBLIC_URL + "/game",
+            state: { pseudo: this.state.pseudo , token: this.props.location.state.token}});
+                 
         }else{
             return (
                 
                 <div class="test">
                 {/* bouton de test au cas ou  */}
                 <div class="init_test">
-                <button type="button" class="btn_hidden" onClick={this.test2}></button>
+                <button type="button" class="btn_hidden" onClick={this.infoAttack}></button>
                 </div>
       
                 {/* div contenant le plateau centrale */}
@@ -429,10 +543,11 @@ test2=()=>{
                 </div>
       
                 <div class="player2">
-                <div class="life">{this.state.adverseHp}</div>
+                <button type="button" class="btn_hidden" onClick={this.targetPlayer}></button>
+                <div class="life">{Math.round(this.state.adverseHp)}</div>
                 </div>
                 <div class="player1">
-                <div class="life">{this.state.yourHp}</div>
+                <div class="life">{Math.round(this.state.yourHp)}</div>
                 </div>
       
       
@@ -440,6 +555,9 @@ test2=()=>{
                 {/* div contenant une carte avec le nombre de cartes dans la main adverse */}
                 <div class="pioche_j2">
                 <div class="nbCardJ2">{this.state.nbCardj2}</div>
+                </div>
+                <div class="turn" style={{backgroundColor: this.state.colorTurn}}>
+                <div class="turnText">{this.state.textTurn}</div>
                 </div>
                 {/* representation du deck avec bouton pour piocher */}
                 <div class="deck">
@@ -452,6 +570,19 @@ test2=()=>{
       
                 </div>
       
+                <div class="infoCombat" style={{display: this.state.infoAttack}}>
+                <div class="infoAttack">
+                <div class="textInfoAttack">Attaquant: <br/>{this.state.championAttack}</div>
+                </div>
+                <div class="infoTarget">
+                <div class="textInfoAttack">Cible: <br/>{this.state.targetByAttack}</div>
+                </div>
+                </div>
+
+                <div class="attaquer" style={{display: this.state.infoAttack}} onClick={this.attaquer}>
+                <button type="button" class="btn_hidden" style={{color: "white",fontSize: "2vw",fontWeight: "900"}}>Attaquer</button>
+                
+                </div>
               </div>
               
               

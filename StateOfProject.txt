@@ -1,0 +1,3 @@
+Le jeu fonctionne, il faut cependant gérer les problèmes afficher avec des alertes ( changer par des 'modal' qui 
+pop? ) pour les rendres plus jolies. Lors de la fin de partie on est renvoyer sur la page d'acceuil mais la page 
+d'acceuil nous redirige direct vers le match.. Probleme.
