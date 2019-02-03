@@ -19,6 +19,7 @@ class Jeu extends Component {
             // token: "JgUY9ZDH347l_7mXbzXZBHSSx3iejNF5",
             yourPseudo: this.props.location.state.pseudo,
             adversePseudo: null,
+            isLoaded: false,
             // pseudo: "11",
 
             //Deck info
@@ -46,7 +47,11 @@ class Jeu extends Component {
             //your action
             infoAttack: "none",
             championAttack: "",
-            targetByAttack: ""
+            targetByAttack: "",
+
+            //endMatch info
+            finMatch: false,
+            gagnant: null,
         };
       }
 
@@ -56,7 +61,7 @@ this.getChampfromBack();
 this.getDeckLoad();
 this.getMatch();
 this.intervalGetMatch = setInterval(() => this.getMatch(), 1000);
-
+this.setState({isLoaded: true})
     
 }
 
@@ -223,10 +228,7 @@ playCard = (nameChamp) => {
   }
   
   
-  componentDidMount(){
-    this.getMatch();
-    // this.intervalGetMatch2 = setInterval(() => this.getMatch(), 5000);
-  }
+
   
   getMatch(){
     axios
@@ -450,10 +452,9 @@ attaquer=()=>{
             if(this.state.BoardJ2.length != 0){
                 alert("Vous devez vider le board adverse d'abord")
             }else{
-                alert("attaque sur l'adversaire")
+                this.attaqueChampJoueur(this.state.championAttack)
             }
         }else{
-            alert(this.state.championAttack+" attaque "+this.state.targetByAttack)
             this.attaqueChampChamp(this.state.championAttack,this.state.targetByAttack)
         }
         
@@ -471,7 +472,22 @@ attaqueChampChamp=(champName,targetChamp)=>{
     )
     .then(res => {
       if(res.data.status === "ok"){
-        alert("attaque ok")
+      }
+    else {
+      alert("error")
+    }
+  
+  })
+}
+
+attaqueChampJoueur=(champName)=>{
+    axios
+    .get(
+      SERVER_URL + "/match/attackPlayer?card=" + champName +
+      "&token="+this.state.token
+    )
+    .then(res => {
+      if(res.data.status === "ok"){
       }
     else {
       alert("error")
@@ -481,22 +497,34 @@ attaqueChampChamp=(champName,targetChamp)=>{
 }
 
 finMatch=()=>{
+    clearInterval(this.intervalGetMatch);
     axios
     .get(
-      SERVER_URL + "/match/attack?token="+this.state.token
+      SERVER_URL + "/match/finishMatch?token="+this.state.token
     )
     .then(res => {
-      if(res.data.status === "ok"){
-        alert("fin du match ok")
+      if(res.data.status === "Player 1 won" || res.data.status === "Player 2 won"){
+        this.setState({
+            finMatch: true,
+            gagnant: res.data.status
+        })
       }
     else {
-      alert("error")
+        if(res.message === "There is no match associated"){
+            this.setState({
+                finMatch: true
+            })
+        }else{
+            alert("error")
+        }
+      
     }
   
   })
 }
 
     render() {
+        if(this.state.isLoaded){
         if(!this.state.deck){
             return (
                 <div>
@@ -504,91 +532,98 @@ finMatch=()=>{
                 <span className="title-jouer">Deck&nbsp;&nbsp;</span>
                 <span className="title-jouer shift">›</span>
                 <div className="mask"></div>
-            </div>  
-            <div className="button-modal" onClick={this.handleCreateDeck}>
-                <span className="title-jouer">(ne cliquer que si vous avez déjà fait initDeck)&nbsp;&nbsp;</span>
-                <span className="title-jouer shift">›</span>
-                <div className="mask"></div>
             </div>
             </div>
             );
-        }else if(!this.state.yourTurn && !this.state.yourTurn){
-            alert("fin de la partie")
-            this.finMatch()
-            this.props.history.push({pathname : process.env.PUBLIC_URL + "/game",
-            state: { pseudo: this.state.pseudo , token: this.props.location.state.token}});
-                 
         }else{
-            return (
-                
-                <div class="test">
-                {/* bouton de test au cas ou  */}
-                <div class="init_test">
-                <button type="button" class="btn_hidden" onClick={this.infoAttack}></button>
-                </div>
-      
-                {/* div contenant le plateau centrale */}
-                <div class="center_board">
-                <div class="endTurn">
-                </div>
-                <div class="plateauJ1">
-                  {this.state.BoardJ1}
-                </div>
-                <div class="plateauJ2">
-                  {this.state.BoardJ2}
-                </div>
-                <div class="endTurn">
-                <button type="button" class="btn_hidden" onClick={this.endTurn}></button>
-                </div>
-                </div>
-      
-                <div class="player2">
-                <button type="button" class="btn_hidden" onClick={this.targetPlayer}></button>
-                <div class="life">{Math.round(this.state.adverseHp)}</div>
-                </div>
-                <div class="player1">
-                <div class="life">{Math.round(this.state.yourHp)}</div>
-                </div>
-      
-      
-      
-                {/* div contenant une carte avec le nombre de cartes dans la main adverse */}
-                <div class="pioche_j2">
-                <div class="nbCardJ2">{this.state.nbCardj2}</div>
-                </div>
-                <div class="turn" style={{backgroundColor: this.state.colorTurn}}>
-                <div class="turnText">{this.state.textTurn}</div>
-                </div>
-                {/* representation du deck avec bouton pour piocher */}
-                <div class="deck">
-                <button type="button" class="btn_hidden" onClick={this.pickCard}></button>
-                </div>
-      
-                <div class="hand">
-                
-                {this.state.hands}
-      
-                </div>
-      
-                <div class="infoCombat" style={{display: this.state.infoAttack}}>
-                <div class="infoAttack">
-                <div class="textInfoAttack">Attaquant: <br/>{this.state.championAttack}</div>
-                </div>
-                <div class="infoTarget">
-                <div class="textInfoAttack">Cible: <br/>{this.state.targetByAttack}</div>
-                </div>
-                </div>
-
-                <div class="attaquer" style={{display: this.state.infoAttack}} onClick={this.attaquer}>
-                <button type="button" class="btn_hidden" style={{color: "white",fontSize: "2vw",fontWeight: "900"}}>Attaquer</button>
-                
-                </div>
-              </div>
-              
-              
-      );
+            if(this.state.yourTurn === false && this.state.adverseTurn === false){
+                this.finMatch()
+                    return(
+                        <div>
+                        La partie est finie merci d'avoir joué
+                        <br/>
+                        {this.state.gagnant}
+                    </div>
+                    )
+       
+            }
+            else{
+                return (
+                    
+                    <div class="test">
+                    {/* bouton de test au cas ou  */}
+                    <div class="init_test">
+                    <button type="button" class="btn_hidden" onClick={this.infoAttack}></button>
+                    </div>
+          
+                    {/* div contenant le plateau centrale */}
+                    <div class="center_board">
+                    <div class="endTurn">
+                    </div>
+                    <div class="plateauJ1">
+                      {this.state.BoardJ1}
+                    </div>
+                    <div class="plateauJ2">
+                      {this.state.BoardJ2}
+                    </div>
+                    <div class="endTurn">
+                    <button type="button" class="btn_hidden" onClick={this.endTurn}></button>
+                    </div>
+                    </div>
+          
+                    <div class="player2">
+                    <button type="button" class="btn_hidden" onClick={this.targetPlayer}></button>
+                    <div class="life">{Math.round(this.state.adverseHp)}</div>
+                    </div>
+                    <div class="player1">
+                    <div class="life">{Math.round(this.state.yourHp)}</div>
+                    </div>
+          
+          
+          
+                    {/* div contenant une carte avec le nombre de cartes dans la main adverse */}
+                    <div class="pioche_j2">
+                    <div class="nbCardJ2">{this.state.nbCardj2}</div>
+                    </div>
+                    <div class="turn" style={{backgroundColor: this.state.colorTurn}}>
+                    <div class="turnText">{this.state.textTurn}</div>
+                    </div>
+                    {/* representation du deck avec bouton pour piocher */}
+                    <div class="deck">
+                    <button type="button" class="btn_hidden" onClick={this.pickCard}></button>
+                    </div>
+          
+                    <div class="hand">
+                    
+                    {this.state.hands}
+          
+                    </div>
+          
+                    <div class="infoCombat" style={{display: this.state.infoAttack}}>
+                    <div class="infoAttack">
+                    <div class="textInfoAttack">Attaquant: <br/>{this.state.championAttack}</div>
+                    </div>
+                    <div class="infoTarget">
+                    <div class="textInfoAttack">Cible: <br/>{this.state.targetByAttack}</div>
+                    </div>
+                    </div>
+    
+                    <div class="attaquer" style={{display: this.state.infoAttack}} onClick={this.attaquer}>
+                    <button type="button" class="btn_hidden" style={{color: "white",fontSize: "2vw",fontWeight: "900"}}>Attaquer</button>
+                    
+                    </div>
+                  </div>
+                  
+                  
+          );
+        }
+        }
+    }else{
+        return(
+            <div>Loading... </div>
+        )
     }
-    }
+}
 }
 
 export default Jeu;
