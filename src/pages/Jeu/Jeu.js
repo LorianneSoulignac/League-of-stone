@@ -16,11 +16,9 @@ class Jeu extends Component {
         this.state = {
             // general info
             token: this.props.location.state.token,
-            // token: "JgUY9ZDH347l_7mXbzXZBHSSx3iejNF5",
             yourPseudo: this.props.location.state.pseudo,
             adversePseudo: null,
             isLoaded: false,
-            // pseudo: "11",
 
             //Deck info
             champions: [],
@@ -239,13 +237,23 @@ playCard = (nameChamp) => {
       )
       .then(res => {
         if(res.data.status === "ok"){
+           
           // change the property of state
-          
-          this.setState({data: res.data.data})
-          this.test2();
+          if(res.data.data.status === "Player 1 won" || res.data.data.status === "Player 2 won"){
+            this.setState({
+                finMatch: true,
+            })
+          }else{
+            this.setState({data: res.data.data})
+            this.test2();
+          }
         }
       else {
-        // alert error
+        if(res.message == "There is no match associated"){
+            this.setState({
+                finMatch: true,
+            })
+        }
       }
     
     })
@@ -441,6 +449,7 @@ infoAttack=()=>{
 }
 
 attaquer=()=>{
+    if(this.state.yourTurn){
     if(this.state.championAttack == "" || this.state.targetByAttack == ""){
         if(this.state.championAttack == ""){
             alert("Selectionnes un attaquant!")
@@ -459,6 +468,9 @@ attaquer=()=>{
         }
         
     }
+    }else{
+        this.canDoactionAlertNot();
+    }
     
 }
 
@@ -474,7 +486,7 @@ attaqueChampChamp=(champName,targetChamp)=>{
       if(res.data.status === "ok"){
       }
     else {
-      alert("error")
+      alert("error attaque champ")
     }
   
   })
@@ -490,7 +502,7 @@ attaqueChampJoueur=(champName)=>{
       if(res.data.status === "ok"){
       }
     else {
-      alert("error")
+      alert("error attaque adverse")
     }
   
   })
@@ -536,7 +548,7 @@ finMatch=()=>{
             </div>
             );
         }else{
-            if(this.state.yourTurn === false && this.state.adverseTurn === false){
+            if(this.state.finMatch == true){
                 this.finMatch()
                     return(
                         <div>
