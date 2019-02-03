@@ -15,14 +15,14 @@ class Jeu extends Component {
         super(props);
         this.state = {
             // general info
-            // token: this.props.location.state.token,
-            token: "JgUY9ZDH347l_7mXbzXZBHSSx3iejNF5",
-            //yourPseudo: this.props.location.state.pseudo,
-            pseudo: "11",
+            token: this.props.location.state.token,
+            // token: "JgUY9ZDH347l_7mXbzXZBHSSx3iejNF5",
+            yourPseudo: this.props.location.state.pseudo,
+            // pseudo: "11",
 
             //Deck info
             champions: [],
-            deck: false,
+            deck: true,
 
             // board info
             adverseHp: null,
@@ -33,7 +33,12 @@ class Jeu extends Component {
             nbCardHand:null,
             BoardJ1: [],
             BoardJ2: [],
-            data: null
+            data: null,
+            yourTurn: null,
+            adverseTurn: null,
+
+            //your action
+
         };
       }
 
@@ -149,15 +154,55 @@ handleCreateDeck=()=>{
 //Partie de la gestion du plateau
 
 pickCard = () => {
-    if(this.state.nbCardHand <=5){
-    let toto = this.state.hands;
-    toto.push(
-      <Card lvl={this.state.nbCardHand}
-      onClick={this.temp.bind(this, this.state.nbCardHand)}
-  />);
-    this.setState({hands: toto, nbCardHand: this.state.nbCardHand+1})
+    if(this.canDoaction()){
+        axios
+      .get(
+        SERVER_URL + "/match/pickCard?token=" + 
+        // replace with own token
+        this.state.token
+      )
+      .then(res => {
+        if(res.data.status === "ok"){
+          // change the property of state
+          
+          this.setState({data: res.data.data})
+          this.getMatch();
+        }
+      else if(res.data.status == "error" & res.data.message=="Card already picked"){
+        alert("deja pioché")
+      }
+    })
+    } else{
+        this.canDoactionAlertNot()
     }
+    
+}
+
+playCard = (nameChamp) => {
+    if(this.canDoaction()){
+        axios
+      .get(
+        SERVER_URL + "/match/playCard?token=" + 
+        // replace with own token
+        this.state.token
+        + "&card=" + nameChamp
+      )
+      .then(res => {
+        if(res.data.status === "ok"){
+          // change the property of state
+          
+          this.setState({data: res.data.data})
+          this.getMatch();
+        }
+      else {
+        // alert error
+      }
+    })
+    } else{
+        this.canDoactionAlertNot()
     }
+    
+}
   
   temp = (id,event) =>{
     alert("Vous allez joué le champion: "+id)
@@ -208,85 +253,63 @@ pickCard = () => {
   
   }
   
-  
-  componentWillMount(){
-  
-    clearInterval(this.intervalGetMatch);
-    clearInterval(this.intervalGetMatch2);
-  
+ 
+  canDoaction=()=>{
+    let getAll = this.state.data;   
+    let p1 = null;
+    let p2 = null;
+    if(this.state.yourPseudo == getAll['player1']['name']){
+        p1 = 'player1'
+        p2 = 'player2'
+    }else{
+        p2 = 'player1'
+        p1 = 'player2'
+    }
+    return getAll[p1]['turn'];
+  }
+  canDoactionAlertNot=()=>{
+    let getAll = this.state.data;
+ 
+    let p1 = null;
+    let p2 = null;
+    if(this.state.yourPseudo == getAll['player1']['name']){
+        p1 = 'player1'
+        p2 = 'player2'
+    }else{
+        p2 = 'player1'
+        p1 = 'player2'
+    }
+
+    if(!getAll[p1]['turn']){
+        alert("Ce n'est pas votre tour")
+    };
   }
   
     endTurn = () => {
-      alert("Fin du tour")
+        if(this.canDoaction()){
+      axios
+    .get(
+      SERVER_URL + "/match/endTurn?token=" + 
+      // replace with own token
+      this.state.token
+    )
+    .then(res => {
+      if(res.data.status === "ok"){
+        alert("changement turn")
+      }
+  
+    })
+    }else{
+        this.canDoactionAlertNot()
+    }
     }
 
-    test = () =>{
-        let getAll = this.state.data;
-        console.log(getAll)
-        let yourhp = getAll['player1']['hp']
-        let adverseHp = getAll['player2']['hp']
-        let hands = getAll['player1']['hand']
-        let BoardJ1 = getAll['player1']['board']
-        let BoardJ2 = getAll['player2']['board']
-        let finalHands = []
-        let finalBoardj1 = []
-        let finalBoardj2 = []
-        let nbCardj2 = getAll['player2']['hand']
-        let i=1;
-        for (let card in hands){
-          finalHands.push(
-            <Card lvl={i}
-            name= {hands[card]['name']}
-            attack= {hands[card]['stats']['attackdamage']}
-            deff = {hands[card]['stats']['armor']}
-            onClick={this.temp.bind(this, hands[card]['name'])}
-            />
-            
-          );
-          i = i+1;
-        }
-        i=1;
-        for (let card in BoardJ1){
-          finalBoardj1.push(
-            <CardBoard lvl={i}
-            name= {BoardJ1[card]['name']}
-            attack= {BoardJ1[card]['stats']['attackdamage']}
-            deff = {BoardJ1[card]['stats']['armor']}
-            onClick={this.temp.bind(this, BoardJ1[card]['name'])}
-            />
-            
-          );
-          i = i+1;
-        }
-        i=1;
-        for (let card in BoardJ2){
-          finalBoardj2.push(
-            <CardBoard lvl={i}
-            name= {BoardJ2[card]['name']}
-            attack= {BoardJ2[card]['stats']['attackdamage']}
-            deff = {BoardJ2[card]['stats']['armor']}
-            />
-            
-          );
-          i = i+1;
-        };
-        this.setState({
-            yourHp: yourhp,
-            adverseHp: adverseHp,
-            hands: finalHands,
-            nbCardHand: finalHands.length+1,
-            BoardJ1: finalBoardj1,
-            BoardJ2: finalBoardj2,
-            nbCardj2: nbCardj2
-        })
-      }
-
+ 
 test2=()=>{
     let getAll = this.state.data;
-    console.log(getAll)
     let p1 = null;
     let p2 = null;
-    if(this.state.pseudo === getAll['player1']['name']){
+    if(this.state.yourPseudo === getAll['player1']['name']){
         p1 = 'player1'
         p2 = 'player2'
     }else{
@@ -302,14 +325,17 @@ test2=()=>{
         let finalBoardj1 = []
         let finalBoardj2 = []
         let nbCardj2 = getAll[p2]['hand']
+        let yourTurn = getAll[p1]['turn']
+        let adverseTurn = getAll[p2]['turn']
         let i=1;
         for (let card in hands){
+            let nameChamp= hands[card]['name'].replace(/\s/g, '');
           finalHands.push(
             <Card lvl={i}
-            name= {hands[card]['name']}
+            name= {nameChamp}
             attack= {hands[card]['stats']['attackdamage']}
             deff = {hands[card]['stats']['armor']}
-            onClick={this.temp.bind(this, hands[card]['name'])}
+            onClick={this.playCard.bind(this, nameChamp)}
             />
             
           );
@@ -317,12 +343,13 @@ test2=()=>{
         }
         i=1;
         for (let card in BoardJ1){
+            let nameChamp= BoardJ1[card]['name'].replace(/\s/g, '');
           finalBoardj1.push(
             <CardBoard lvl={i}
-            name= {BoardJ1[card]['name']}
+            name= {nameChamp}
             attack= {BoardJ1[card]['stats']['attackdamage']}
             deff = {BoardJ1[card]['stats']['armor']}
-            onClick={this.temp.bind(this, BoardJ1[card]['name'])}
+            onClick={this.temp.bind(this,nameChamp)}
             />
             
           );
@@ -330,9 +357,10 @@ test2=()=>{
         }
         i=1;
         for (let card in BoardJ2){
+            let nameChamp= BoardJ2[card]['name'].replace(/\s/g, '');
           finalBoardj2.push(
             <CardBoard lvl={i}
-            name= {BoardJ2[card]['name']}
+            name= {nameChamp}
             attack= {BoardJ2[card]['stats']['attackdamage']}
             deff = {BoardJ2[card]['stats']['armor']}
             />
@@ -347,7 +375,9 @@ test2=()=>{
             nbCardHand: finalHands.length+1,
             BoardJ1: finalBoardj1,
             BoardJ2: finalBoardj2,
-            nbCardj2: nbCardj2
+            nbCardj2: nbCardj2,
+            yourTurn: yourTurn,
+            adverseTurn: adverseTurn,
         })
       }
 
