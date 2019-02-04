@@ -50,6 +50,8 @@ class Jeu extends Component {
             //endMatch info
             finMatch: false,
             gagnant: null,
+            p1: null,
+            p2: null,
         };
       }
 
@@ -240,6 +242,8 @@ playCard = (nameChamp) => {
            
           // change the property of state
           if(res.data.data.status === "Player 1 won" || res.data.data.status === "Player 2 won"){
+          
+              
             this.setState({
                 finMatch: true,
                 gagnant: res.data.data.status
@@ -357,6 +361,7 @@ test2=()=>{
         let i=1;
         for (let card in hands){
             let nameChamp= hands[card]['name'].replace(/\s/g, '');
+            nameChamp = (nameChamp.charAt(0).toUpperCase() + nameChamp.substring(1).toLowerCase())
           finalHands.push(
             <Card lvl={i}
             name= {nameChamp}
@@ -371,6 +376,7 @@ test2=()=>{
         i=1;
         for (let card in BoardJ1){
             let nameChamp= BoardJ1[card]['name'].replace(/\s/g, '');
+            nameChamp = (nameChamp.charAt(0).toUpperCase() + nameChamp.substring(1).toLowerCase())
           finalBoardj1.push(
             <CardBoard lvl={i}
             name= {nameChamp}
@@ -385,6 +391,7 @@ test2=()=>{
         i=1;
         for (let card in BoardJ2){
             let nameChamp= BoardJ2[card]['name'].replace(/\s/g, '');
+            nameChamp = (nameChamp.charAt(0).toUpperCase() + nameChamp.substring(1).toLowerCase())
           finalBoardj2.push(
             <CardBoard lvl={i}
             name= {nameChamp}
@@ -417,7 +424,9 @@ test2=()=>{
             adverseTurn: adverseTurn,
             colorTurn: colorTurn,
             textTurn: textTurn,
-            adversePseudo: adversePseudo
+            adversePseudo: adversePseudo,
+            p1: p1,
+            p2: p2
         })
       }
 
@@ -487,7 +496,12 @@ attaqueChampChamp=(champName,targetChamp)=>{
       if(res.data.status === "ok"){
       }
     else {
-      alert("error attaque champ")
+        if(res.data.message === "This card has already attacked"){
+            alert("Nous ne pouvez pas encore attaquer avec cette carte")
+        }else{
+              alert("error attaque champ")
+        }
+    
     }
   
   })
@@ -567,9 +581,9 @@ finMatch=()=>{
                     
                     <div class="test">
                     {/* bouton de test au cas ou  */}
-                    <div class="init_test">
+                    {/* <div class="init_test">
                     <button type="button" class="btn_hidden" onClick={this.infoAttack}></button>
-                    </div>
+                    </div> */}
           
                     {/* div contenant le plateau centrale */}
                     <div class="center_board">
