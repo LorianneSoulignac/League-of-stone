@@ -360,14 +360,13 @@ test2=()=>{
         let adversePseudo = getAll[p2]['name']
         let i=1;
         for (let card in hands){
-            let nameChamp= hands[card]['name'].replace(/\s/g, '');
-            nameChamp = (nameChamp.charAt(0).toUpperCase() + nameChamp.substring(1).toLowerCase())
+            console.log(hands[card])
           finalHands.push(
             <Card lvl={i}
-            name= {nameChamp}
+            name= {hands[card]['key']}
             attack= {hands[card]['stats']['attackdamage']}
             deff = {hands[card]['stats']['armor']}
-            onClick={this.playCard.bind(this, nameChamp)}
+            onClick={this.playCard.bind(this, hands[card]['key'])}
             />
             
           );
@@ -375,14 +374,12 @@ test2=()=>{
         }
         i=1;
         for (let card in BoardJ1){
-            let nameChamp= BoardJ1[card]['name'].replace(/\s/g, '');
-            nameChamp = (nameChamp.charAt(0).toUpperCase() + nameChamp.substring(1).toLowerCase())
           finalBoardj1.push(
             <CardBoard lvl={i}
-            name= {nameChamp}
+            name= {BoardJ1[card]['key']}
             attack= {BoardJ1[card]['stats']['attackdamage']}
             deff = {BoardJ1[card]['stats']['armor']}
-            onClick={this.attackFromCard.bind(this,nameChamp)}
+            onClick={this.attackFromCard.bind(this,BoardJ1[card]['key'])}
             />
             
           );
@@ -390,14 +387,12 @@ test2=()=>{
         }
         i=1;
         for (let card in BoardJ2){
-            let nameChamp= BoardJ2[card]['name'].replace(/\s/g, '');
-            nameChamp = (nameChamp.charAt(0).toUpperCase() + nameChamp.substring(1).toLowerCase())
           finalBoardj2.push(
             <CardBoard lvl={i}
-            name= {nameChamp}
+            name= {BoardJ2[card]['key']}
             attack= {BoardJ2[card]['stats']['attackdamage']}
             deff = {BoardJ2[card]['stats']['armor']}
-            onClick={this.targetCard.bind(this,nameChamp)}
+            onClick={this.targetCard.bind(this,BoardJ2[card]['key'])}
             />
             
           );
