@@ -4,6 +4,7 @@ import Modal from 'react-responsive-modal'
 import { SERVER_URL } from './consts';
 import './Game.css';
 import Rules from './Rules';
+import swal from 'sweetalert';
 
 
 
@@ -105,7 +106,7 @@ class Game extends Component {
       "/matchmaking/request?matchmakingId=" + userMid + "&token="+this.props.location.state.token)
     .then(res =>{
       if(res.data.status === "ok"){
-        console.log("request send")
+        swal("Demande de Match", "Invitation envoyée", "success");
       } 
     })
   }
