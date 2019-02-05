@@ -45,12 +45,14 @@ class Signin extends Component {
         }
       });
   }
-  renderTools(){
 
+  renderTools(){
   }
+
   handleChangeEmail(e) {
     this.setState({ email: e.target.value });
   }
+
   handleChangePassword(e) {
     this.setState({ password: e.target.value });
   }
@@ -58,45 +60,41 @@ class Signin extends Component {
 
   render() {
     return (
-      <div>
-        
+      <div>     
         <form onSubmit={this.handleSubmit} className="box">
           <div>
             <label>
-            <div className="error">T'as pas de compte ou quoi mon gars ! :) </div>
+              <div className="error">T'as pas de compte ou quoi mon gars ! :) </div>
               <p id="titre">Login :</p>
               <input
                 type="text"
                 value={this.state.email}
                 onChange={this.handleChangeEmail}
                 placeholder="Email"
-              />
+                  />
             </label>
           </div>
           <div>
             <label>
-              {/* Mot de passe :{" "} */}
               <input
                 type={this.state.visibility ? 'text' : 'password'}
                 value={this.state.password}
                 onChange={this.handleChangePassword}
                 placeholder="Mot de passe"
                 className="password"
-              />
-              
+              />      
             </label>
           </div>
           <div>
             <input type="submit" value="Se connecter"/>
           </div>
           <div className="box-text">
-          {
-            "Vous n’avez pas de compte ? "
-          }
-          <Link to="/signup" className="box-subText">Inscrivez-vous !</Link>
-        </div>
-        </form>
-        
+              {
+                "Vous n’avez pas de compte ? "
+              }
+              <Link to="/signup" className="box-subText">Inscrivez-vous !</Link>
+          </div>
+        </form> 
       </div>
     );
   }

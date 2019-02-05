@@ -21,28 +21,31 @@ class Game extends Component {
       email: this.props.location.state.email
     };
   }
-  // modal
+
   onOpenModal = () => {
     this.setState({open : true})
   }
+
   onCloseModal = () => {
     this.setState({open : false})
   }
-  // modal
+
   onOpenModalProfils = () => {
     this.setState({openP : true})
   }
+
   onCloseModalProfils = () => {
     this.setState({openP : false})
   }
-   // modal
+
    onOpenModalRules = () => {
     this.setState({openR : true})
   }
+
   onCloseModalRules = () => {
     this.setState({openR : false})
   }
-  // request deconnexion and delet
+
   disconnection() {
     axios
       .get(
@@ -61,22 +64,22 @@ class Game extends Component {
     this.props.history.push({pathname : process.env.PUBLIC_URL + "/delet", state: { pseudo : this.state.pseudo, email :this.state.email, token:this.props.location.state.token}});
   }
 
-   // refresh request Matchmaking and getALl
   componentDidMount(){
     this.intervalMatchmaking = setInterval(() => this.participate(),2000);
     this.intervalGetAll = setInterval(() => this.getAll(), 2000);
     this.intervalGetMatch = setInterval(() => this.getMatch(), 2000)
   }
+
   componentWillmount(){
     clearInterval(this.interval);
     clearInterval(this.intervalGetAll);
     clearImmediate(this.intervalGetMatch);
   }
-  //  All request
+
   participate(){
     axios
       .get(
-      SERVER_URL +
+        SERVER_URL +
         "/matchmaking/participate?token="+this.props.location.state.token)
         .then(res => {
           if(res.data.status === "ok" && res.data.data.request !== 0){
@@ -84,41 +87,40 @@ class Game extends Component {
           }
         });
   }
+
   getAll(){
     axios
     .get(
       SERVER_URL +
       "/matchmaking/getAll?token="+this.props.location.state.token)
-      .then(res => {
-          this.setState({listOfPlayers: res.data.data})
-      });
+    .then(res => {
+         this.setState({listOfPlayers: res.data.data})
+    });
   }
+
   request(userMid){
     axios
     .get(
       SERVER_URL +
-      "/matchmaking/request?matchmakingId=" + userMid + "&token="+this.props.location.state.token
-      ).then(res =>{
-        if(res.data.status === "ok"){
-          console.log("request send")
-        } 
-      })
+      "/matchmaking/request?matchmakingId=" + userMid + "&token="+this.props.location.state.token)
+    .then(res =>{
+      if(res.data.status === "ok"){
+        console.log("request send")
+      } 
+    })
   }
+
   acceptRequest(userMid){
     axios
       .get(
         SERVER_URL +
           "/matchmaking/acceptRequest?matchmakingId=" + userMid + "&token="+this.props.location.state.token)
-          .then(res => {
-            if (res.data.status === "ok") {
-                console.log("accpet")
-
-
-                // this.props.history.push({pathname : process.env.PUBLIC_URL + "/Jeu",
-                // state: { player1 : res.data.player1, player2: res.data.player2, token: this.props.location.state.token}});
-                this.props.history.push({pathname : process.env.PUBLIC_URL + "/jeu",
-                state: { pseudo: this.state.pseudo ,player1 : res.data.player1, player2: res.data.player2, token: this.props.location.state.token}});
-            }
+        .then(res => {
+          if (res.data.status === "ok") {
+            console.log("accpet")
+            this.props.history.push({pathname : process.env.PUBLIC_URL + "/jeu",
+            state: { pseudo: this.state.pseudo ,player1 : res.data.player1, player2: res.data.player2, token: this.props.location.state.token}});
+          }
         });
   }
 
@@ -126,13 +128,13 @@ class Game extends Component {
     axios
     .get(
       SERVER_URL +
-        "/match/getMatch?token="+this.props.location.state.token
-    ).then(res => {
-        if (res.data.status === "ok") {
+        "/match/getMatch?token="+this.props.location.state.token)
+    .then(res => {
+      if (res.data.status === "ok") {
             this.props.history.push({pathname : process.env.PUBLIC_URL + "/jeu",
             state: { pseudo: this.state.pseudo ,player1 : res.data.player1, player2: res.data.player2, token: this.props.location.state.token}});
-                 }
-      });
+      }
+    });
   }
 
   render() {
@@ -177,49 +179,48 @@ class Game extends Component {
             <span className="title-jouer shift">›</span>
             <div className="mask"></div>
         </div>
-        <Modal open={open} onClose={this.onCloseModal} className="modal" >
-          <div className="backdropStyle">
-          <div className="modalStyle">
-            <div className="modal-child">
-              <div className="modal-child-style">
-                <div className="modal-header div-receive">
-                <h2 className="modal-title">Demandes reçues</h2>
+          <Modal open={open} onClose={this.onCloseModal} className="modal" >
+            <div className="backdropStyle">
+              <div className="modalStyle">
+                <div className="modal-child">
+                  <div className="modal-child-style">
+                    <div className="modal-header div-receive">
+                      <h2 className="modal-title">Demandes reçues</h2>
+                    </div>             
+                    <ul className="list-group">
+                      {this.state.listOfRequest.map((item,index)=>(
+                      <li className="list-group-item" key={index}>{item.name}
+                        <button type="button" className="btn btn-success" onClick={() => this.acceptRequest(item.matchmakingId)}>
+                          Accepter
+                        </button>
+                      </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div className="modal-child-style">
+                    <div className="modal-header div-players">
+                      <h2 className="modal-title">Joueurs connectés</h2>
+                    </div>
+                    <ul className="list-group">
+                      {this.state.listOfPlayers.map((item, index)=>(
+                        <li className="list-group-item" key={index}>{item.name}
+                          <button type="button" className="btn btn-success"  onClick={() => this.request(item.matchmakingId)}>
+                          Inviter
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
-                
-                <ul className="list-group">
-                {this.state.listOfRequest.map((item,index)=>(
-                  <li className="list-group-item" key={index}>{item.name}
-                    <button type="button" className="btn btn-success" onClick={() => this.acceptRequest(item.matchmakingId)}>
-                      Accepter
-                    </button>
-                  </li>
-                ))}
-                </ul>
-              </div>
-            <div className="modal-child-style">
-                <div className="modal-header div-players">
-                  <h2 className="modal-title">Joueurs connectés</h2>
+                <div className="button">
+                  <button className="btn btn-dark" onClick={this.onCloseModal}>
+                    Quitter
+                  </button>
                 </div>
-                <ul className="list-group">
-                  {this.state.listOfPlayers.map((item, index)=>(
-                    <li className="list-group-item" key={index}>{item.name}
-                      <button type="button" className="btn btn-success"  onClick={() => this.request(item.matchmakingId)}>
-                      Inviter
-                      </button>
-                    </li>
-                  ))}
-                </ul>
               </div>
             </div>
-            <div className="button">
-              <button className="btn btn-dark" onClick={this.onCloseModal}>
-                Quitter
-              </button>
-            </div>
-          </div>
+          </Modal>
         </div>
-      </Modal>
-    </div>
     );
   }
 }

@@ -5,18 +5,13 @@ import {
   Route,
   Redirect
 } from "react-router-dom";
-
-// pages
 import Game from "./Game";
 import Signin from './pages/SigninSignup/Signin';
 import Signup from './pages/SigninSignup/Signup';
 import Jeu from "./pages/Jeu/Jeu";
 import Delet from './Delet';
 import InitDeck from './InitDeck';
-
 import "./App.css";
-
-
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route

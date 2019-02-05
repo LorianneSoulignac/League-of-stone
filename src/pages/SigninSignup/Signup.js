@@ -18,23 +18,26 @@ class Signup extends Component {
     this.handleChangeLogin = this.handleChangeLogin.bind(this);
     this.handleChangeEmail = this.handleChangeEmail.bind(this);
     this.handleChangePassword = this.handleChangePassword.bind(this);
-    this.handleChangeConfirmPassword = this.handleChangeConfirmPassword.bind(
-      this
-    );
+    this.handleChangeConfirmPassword = this.handleChangeConfirmPassword.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
+
   handleChangeLogin(e) {
     this.setState({ login: e.target.value });
   }
+
   handleChangeEmail(e) {
     this.setState({ email: e.target.value });
   }
+
   handleChangePassword(e) {
     this.setState({ password: e.target.value });
   }
+
   handleChangeConfirmPassword(e) {
     this.setState({ confirmPassword: e.target.value });
   }
+
   handleSubmit(e) {
     e.preventDefault();
     const { email, password, confirmPassword } = this.state;
@@ -45,6 +48,7 @@ class Signup extends Component {
 
       return;
     }
+
     let url =
       SERVER_URL +
       "/users/subscribe?email=" +
@@ -113,9 +117,8 @@ class Signup extends Component {
           <div className="box-text">
             {"Vous avez un compte ? "}
             <Link to="/signin" className="box-subText">Connectez-vous !</Link>
-        </div>
-        </form>
-        
+          </div>
+        </form>    
       </div>
     );
   }
