@@ -1,0 +1,145 @@
+body{
+    margin: 0;
+    padding: 0;
+    /* background: #1B2631; */
+    font-family: 'Thasadith', sans-serif;
+}
+
+/* titre league of stone */
+#titre{
+    color:  white;
+    font-size: 350%;
+    margin: 0;
+}
+
+
+/* login */
+.box{
+    width: 400px;
+    padding: 30px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    text-align: center;
+    z-index: 10;
+}
+
+.box h1{
+color: white;
+text-transform: uppercase;
+font-weight: 500;
+
+}
+.box input[type = "text"],.box input[type = "password"]{
+border:0;
+background: none;
+display: block;
+margin: 5px auto;
+text-align: center;
+border: 2px solid #e67e22;
+padding: 14px 10px;
+width: 200px;
+outline: none;
+color:white;
+border-radius: 24px;
+transition: 0.25s;
+}
+.box input[type = "text"]:focus,.box input[type = "password"]:focus{
+width: 290px;
+border-color:#f1c40f;
+}
+.box input[type = "submit"]{
+border:0;
+background: none;
+display: block;
+margin: 5px auto;
+text-align: center;
+border: 2px solid #f1c40f;
+padding: 14px 40px;
+outline: none;
+color: white;
+border-radius: 24px;
+transition: 0.25s;
+cursor: pointer;
+}
+
+/* input delet compte */
+.passwordSupp{
+    border:0;
+background: none;
+display: block;
+margin: 5px auto;
+text-align: center;
+border: 2px solid #e67e22;
+padding: 14px 10px;
+width: 200px;
+outline: none;
+color:white;
+border-radius: 24px;
+transition: 0.25s;
+}
+
+.passwordSupp:hover{
+    width: 290px;
+    border-color:#f1c40f;
+}
+/* end */
+
+.box input[type = "submit"]:hover{
+background:#f1c40f;
+}
+
+.box-text{
+    color:white;
+}
+.box-subText{
+    text-decoration: none;
+    color: #f1c40f;
+}
+
+.box-subText:hover{
+    color: #e67e22;
+}
+
+.error{
+    display: none;
+    color: #E74C3C;
+}
+
+.error-password{
+    color: #E74C3C;
+    display: none;
+}
+/* inscrirption */
+
+/* #inscrire{
+    color: aliceblue;
+} */
+
+
+/* bouton voir code */
+
+.unmask {
+    position:absolute;
+    right: 68px; top: 7px;
+    width: 25px;
+    height: 25px;
+    text-indent: -9999px;
+    background: #aaa;
+    border-radius: 50%;
+  }
+  
+  .password[type="text"] + .unmask:after {
+    content: "";
+    position:absolute;
+    top:50px;
+    left:6px;
+    z-index:2;
+    width: 13px;
+    height: 13px;
+    background: #aaa;
+    border-radius: 50%;
+  }
+
+/* visisble */
